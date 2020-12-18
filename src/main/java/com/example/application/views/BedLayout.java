@@ -2,6 +2,7 @@ package com.example.application.views;
 
 import com.example.application.backend.entity.Bed;
 import com.example.application.backend.entity.Patient;
+import com.example.application.backend.service.PatientService;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
@@ -15,41 +16,24 @@ public class BedLayout extends VerticalLayout {
 
     NumberField bedNum = new NumberField();
 
-    private Patient patient;
-
     public BedLayout(Bed bed){
-
-        ProgressBar positionProgress = new ProgressBar(0,100);
-        positionProgress.setHeight("20px");
-
-
-        getStyle().set("border", "1px solid #9E9E9E");
-        setWidth("460px");
-        setHeight("200px");
-        setPadding(true);
 
         add(new H2("Bed " + (int)bed.getBedNum()));
 
         if(bed.isEmpty()){
+
+            ProgressBar positionProgress = new ProgressBar(0,100);
+            positionProgress.setHeight("20px");
             positionProgress.setValue(0);
 
             add(
                     new Label("This Bed is Empty"),
                     positionProgress
             );
-
         }
 
         Binder <Bed> bedBinder = new Binder<>(Bed.class);
         bedBinder.bindInstanceFields(this);
         bedBinder.setBean(bed);
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
     }
 }

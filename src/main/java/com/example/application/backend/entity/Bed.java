@@ -16,7 +16,6 @@ public class Bed {
     private double bedNum;
     private boolean isEmpty;
 
-
     public Bed(int bedNum){
         this.bedNum = bedNum;
         isEmpty = true;

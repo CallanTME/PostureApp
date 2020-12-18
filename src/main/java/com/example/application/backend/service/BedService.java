@@ -35,6 +35,9 @@ public class BedService {
         bedRepo.save(bed);
     }
 
+    public void setBedFull(long id){
+    }
+
 
     @PostConstruct
     public void setUpBeds(){

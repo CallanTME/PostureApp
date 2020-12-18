@@ -28,6 +28,16 @@ public class PatientService {
         patientRepo.delete(patient);
     }
 
+    public Patient getByBedNum(double bedNum){
+        for(long i = 1;i < patientRepo.count();i++){
+            double tempBedNum = patientRepo.getOne(i).getBedNum();
+            if(tempBedNum == bedNum){
+                return patientRepo.getOne(i);
+            }
+        }
+        return null;
+    }
+
     public void save(Patient patient){
         if (patient == null){
             LOGGER.log(Level.SEVERE, "Patient is null");

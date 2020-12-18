@@ -56,21 +56,27 @@ public class WardView extends VerticalLayout {
         addLine.add(nameIn,bedNumIn,bScoreIn,addButton);
 
         for(int i = 1;i < 4;i++) {
+            BoxLayout box = new BoxLayout(i);
             bedService.findById(i)
                     .map(BedLayout::new)
-                    .ifPresent(h1::add);
+                    .ifPresent(box::add);
+            h1.add(box);
         }
 
         for(int i = 4;i < 7;i++) {
+            BoxLayout box = new BoxLayout(i);
             bedService.findById(i)
                     .map(BedLayout::new)
-                    .ifPresent(h2::add);
+                    .ifPresent(box::add);
+            h2.add(box);
         }
 
         for(int i = 7;i < 10;i++) {
+            BoxLayout box = new BoxLayout(i);
             bedService.findById(i)
                     .map(BedLayout::new)
-                    .ifPresent(h3::add);
+                    .ifPresent(box::add);
+            h3.add(box);
         }
 
         add(addLine,h1,h2,h3);
@@ -79,14 +85,50 @@ public class WardView extends VerticalLayout {
             patientService.save(new Patient(nameIn.getValue(),bScoreIn.getValue(),bedNumIn.getValue()));
             Patient patient = new Patient(nameIn.getValue(),bScoreIn.getValue(),bedNumIn.getValue());
 
-            /*
+            PatientLayout patientLayout = new PatientLayout(patient);
+
             remove(h1,h2,h3);
             h1.removeAll();
             h2.removeAll();
             h3.removeAll();
 
-             */
+            for(int i = 1;i < 4;i++) {
+                BoxLayout box = new BoxLayout(i);
+                if(patient.getBedNum() == i){
+                    box.add(patientLayout);
+                } else {
+                    bedService.findById(i)
+                            .map(BedLayout::new)
+                            .ifPresent(box::add);
+                }
+                h1.add(box);
+            }
 
+            for(int i = 4;i < 7;i++) {
+                BoxLayout box = new BoxLayout(i);
+                if(patient.getBedNum() == i){
+                    box.add(patientLayout);
+                } else {
+                    bedService.findById(i)
+                            .map(BedLayout::new)
+                            .ifPresent(box::add);
+                }
+                h2.add(box);
+            }
+
+            for(int i = 7;i < 10;i++) {
+                BoxLayout box = new BoxLayout(i);
+                if(patient.getBedNum() == i){
+                    box.add(patientLayout);
+                } else {
+                    bedService.findById(i)
+                            .map(BedLayout::new)
+                            .ifPresent(box::add);
+                }
+                h3.add(box);
+            }
+
+            add(h1,h2,h3);
 
             nameIn.clear();
             bScoreIn.clear();
