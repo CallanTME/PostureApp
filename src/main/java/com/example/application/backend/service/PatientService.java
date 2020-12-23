@@ -5,6 +5,7 @@ import com.example.application.backend.repository.PatientRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,6 +27,20 @@ public class PatientService {
 
     public void delete(Patient patient){
         patientRepo.delete(patient);
+    }
+
+    public Optional<Patient> findByBedNum(double bedNum){
+        for(long i = 1;i < patientRepo.count();i++){
+            double tempBedNum = patientRepo.getOne(i).getBedNum();
+            if(tempBedNum == bedNum){
+                return patientRepo.findById(i);
+            }
+        }
+        return null;
+    }
+
+    public Optional<Patient> findById(long id){
+        return patientRepo.findById(id);
     }
 
     public void save(Patient patient){

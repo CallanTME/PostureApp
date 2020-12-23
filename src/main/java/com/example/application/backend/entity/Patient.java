@@ -15,6 +15,7 @@ public class Patient {
 
     private String name;
     private double bScore;
+
     private double bedNum;
 
 
