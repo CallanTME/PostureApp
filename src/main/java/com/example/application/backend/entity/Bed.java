@@ -1,13 +1,10 @@
 package com.example.application.backend.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class Bed {
+public class Bed{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,12 +13,15 @@ public class Bed {
     private double bedNum;
     private boolean isEmpty;
 
-    public Bed(int bedNum){
+    @OneToOne
+    private Patient patient;
+
+    public Bed(double bedNum){
         this.bedNum = bedNum;
         isEmpty = true;
     }
 
-    public Bed(int bedNum, boolean isEmpty){
+    public Bed(double bedNum, boolean isEmpty){
         this.bedNum = bedNum;
         this.isEmpty = isEmpty;
     }
@@ -29,7 +29,6 @@ public class Bed {
     public Bed(){
 
     }
-
 
     public long getId() {
         return id;
@@ -57,5 +56,13 @@ public class Bed {
 
     public void setFull(){
         isEmpty = false;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 }
