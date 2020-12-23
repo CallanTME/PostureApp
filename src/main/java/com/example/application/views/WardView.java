@@ -2,23 +2,16 @@ package com.example.application.views;
 
 import com.example.application.backend.entity.Bed;
 import com.example.application.backend.entity.Patient;
-import com.example.application.backend.repository.BedRepo;
 import com.example.application.backend.service.*;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
-import org.hibernate.Session;
 
-import java.awt.*;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.util.*;
 
 @Route("")
@@ -26,9 +19,6 @@ public class WardView extends VerticalLayout {
 
     private BedService bedService;
     private PatientService patientService;
-
-    Statement stat;
-    Connection c;
 
     private HorizontalLayout addLine = new HorizontalLayout();
     private HorizontalLayout h1 = new HorizontalLayout();
@@ -41,8 +31,6 @@ public class WardView extends VerticalLayout {
     Button addButton = new Button("ADD");
     NumberField dischargeBedNumIn = new NumberField("Bed #");
     Button dischargeButton = new Button("Discharge");
-
-
 
     public WardView(BedService bedService, PatientService patientService){
         this.bedService = bedService;
@@ -170,7 +158,5 @@ public class WardView extends VerticalLayout {
 
         add(h1,h2,h3);
     }
-
-
 }
 

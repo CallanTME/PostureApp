@@ -57,7 +57,6 @@ public class BedService {
         return null;
     }
 
-
     public boolean isEmptyById(long id){
         return bedRepo.getOne(id).isEmpty();
     }

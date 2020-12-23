@@ -6,6 +6,7 @@ import com.example.application.backend.service.PatientService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -24,21 +25,13 @@ public class BedLayout extends VerticalLayout {
 
         VerticalLayout bedHeader = new VerticalLayout();
         bedHeader.setAlignItems(Alignment.CENTER);
-        bedHeader.add(new H2("Bed " + (int)bed.getBedNum()));
+        bedHeader.add(new H3("Bed " + (int)bed.getBedNum()));
 
         if(bed.isEmpty()){
-
-            /*
-            ProgressBar positionProgress = new ProgressBar(0,100);
-            positionProgress.setHeight("20px");
-            positionProgress.setValue(0);
-
-             */
 
             add(
                     bedHeader,
                     new Label("This Bed is Empty")
-                    //positionProgress
             );
         } else {
 
@@ -46,6 +39,7 @@ public class BedLayout extends VerticalLayout {
             NumberField bScore = new NumberField("Braden Score");
             HorizontalLayout headerLine = new HorizontalLayout();
             HorizontalLayout infoLine = new HorizontalLayout();
+
             ProgressBar progressBar = new ProgressBar(0,100,bed.getPatient().getTimeInPos());
             if(bed.getPatient().getTimeInPos() < 33) {
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_SUCCESS);
@@ -57,8 +51,6 @@ public class BedLayout extends VerticalLayout {
             }
 
             progressBar.setHeight("20px");
-
-
 
             name.setValue(bed.getPatient().getName());
             bScore.setValue(bed.getPatient().getbScore());

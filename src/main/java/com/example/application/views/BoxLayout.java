@@ -9,7 +9,7 @@ public class BoxLayout extends VerticalLayout {
         setAlignItems(Alignment.AUTO);
         getStyle().set("border", "1px solid #9E9E9E");
         setWidth("460px");
-        setHeight("250px");
+        setHeight("275px");
         setPadding(true);
     }
 }
