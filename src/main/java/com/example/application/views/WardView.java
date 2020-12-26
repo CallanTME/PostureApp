@@ -10,11 +10,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.util.*;
 
 @Route("")
+@PageTitle("Ward View | Posture App")
 public class WardView extends VerticalLayout {
 
     private BedService bedService;
@@ -25,10 +27,12 @@ public class WardView extends VerticalLayout {
     private HorizontalLayout h2 = new HorizontalLayout();
     private HorizontalLayout h3 = new HorizontalLayout();
 
+    NumberField idIn = new NumberField("ID");
     TextField nameIn = new TextField("Name");
     NumberField bedNumIn = new NumberField("Bed #");
     NumberField bScoreIn = new NumberField("Braden Score");
-    Button addButton = new Button("ADD");
+    Button addButton = new Button("Add New");
+    Button addIdButton = new Button("Add by ID");
     NumberField dischargeBedNumIn = new NumberField("Bed #");
     Button dischargeButton = new Button("Discharge");
 
@@ -53,9 +57,10 @@ public class WardView extends VerticalLayout {
 
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         dischargeButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
+        addIdButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_CONTRAST);
 
         addLine.setAlignItems(Alignment.BASELINE);
-        addLine.add(nameIn,bedNumIn,bScoreIn,addButton,dischargeBedNumIn,dischargeButton);
+        addLine.add(idIn,nameIn,bedNumIn,bScoreIn,addButton,addIdButton,dischargeBedNumIn,dischargeButton);
 
         for(int i = 1;i < 4;i++) {
             BoxLayout box = new BoxLayout();
@@ -120,6 +125,21 @@ public class WardView extends VerticalLayout {
 
             dischargeBedNumIn.clear();
             dischargeBedNumIn.focus();
+        });
+
+        addIdButton.addClickListener(e ->{
+            long id = Math.round(idIn.getValue());
+            Bed bed = new Bed(bedNumIn.getValue(),false);
+            bed.setPatient(patientService.getById(id));
+            bedService.deleteByBedNum(bedNumIn.getValue());
+            bedService.save(bed);
+
+            refreshList();
+
+            bedNumIn.clear();
+            bedNumIn.focus();
+            idIn.clear();
+            idIn.focus();
         });
     }
 
