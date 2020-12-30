@@ -1,30 +1,18 @@
-package com.example.application.backend.entity;
+package com.example.application.backend;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
-public class Pressure {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long count;
+public class Pressure {
 
     private double pLeft;
     private double pUnder;
     private double pRight;
 
     public Pressure(){};
-
-    public long getCount() {
-        return count;
-    }
-
-    public void setCount(long count) {
-        this.count = count;
-    }
 
     public double getpLeft() {
         return pLeft;

@@ -1,8 +1,9 @@
 package com.example.application.backend.entity;
 
 
+import com.example.application.backend.Pressure;
+
 import javax.persistence.*;
-import java.util.List;
 
 
 @Entity
