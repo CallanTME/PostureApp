@@ -14,6 +14,12 @@ public class Pressure {
 
     public Pressure(){};
 
+    public void getVals(double temp_info[]){
+        pLeft = temp_info[0];
+        pRight = temp_info[1];
+        pUnder = temp_info[2];
+    }
+
     public double getpLeft() {
         return pLeft;
     }

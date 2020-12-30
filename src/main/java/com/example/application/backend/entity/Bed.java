@@ -1,9 +1,23 @@
 package com.example.application.backend.entity;
+//import com.example.application.backend.entity.Pressure;
 
 
 import com.example.application.backend.Pressure;
 
 import javax.persistence.*;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+
+import java.sql.*;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -42,6 +56,52 @@ public class Bed{
     }
 
     public Bed(){
+
+    }
+
+    public void getPressureData() {
+        //establish the db connection:
+        Statement stmt = null;
+        Connection c = null;
+
+        double tempData[] = new double[3];
+
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/groupProject", "postgres", "dadsmells");
+        } catch (Exception p) {
+            p.printStackTrace();
+            System.err.println(p.getClass().getName() + ": " + p.getMessage());
+            System.exit(0);
+        }
+
+
+        try {
+
+            stmt = c.createStatement();
+            String sql = "select avg(left),avg(right),avg(under)\n" +
+                    "from(select left,right,under\n" +
+                    "     from Info\n" +
+                    "     Order By ProductID desc\n" +
+                    "     limit 10\n" +
+                    "     where bed_num=" + bedNum + "\t);";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            tempData[0] = rs.getDouble("avg(left)");
+            tempData[1] = rs.getDouble("avg(right)");
+            tempData[2] = rs.getDouble("avg(under)");
+
+
+        }catch (Exception f) {
+            f.printStackTrace();
+            System.err.println(f.getClass().getName() + ": " + f.getMessage());
+            System.exit(0);
+        }
+
+
+        //we now want to save this to the pressure object.
+        currentPressure.getVals(tempData);
 
     }
 
