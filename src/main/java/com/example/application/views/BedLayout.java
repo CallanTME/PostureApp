@@ -40,11 +40,11 @@ public class BedLayout extends VerticalLayout {
             HorizontalLayout headerLine = new HorizontalLayout();
             HorizontalLayout infoLine = new HorizontalLayout();
 
-            ProgressBar progressBar = new ProgressBar(0,100,bed.getPatient().getTimeInPos());
-            if(bed.getPatient().getTimeInPos() < 33) {
+            ProgressBar progressBar = new ProgressBar(0,100,bed.getTimeInPos());
+            if(bed.getTimeInPos() < 33) {
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_SUCCESS);
             }
-            else if(bed.getPatient().getTimeInPos() < 66){
+            else if(bed.getTimeInPos() < 66){
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_CONTRAST);
             } else {
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_ERROR);

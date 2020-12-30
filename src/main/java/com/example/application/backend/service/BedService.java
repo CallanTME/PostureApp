@@ -28,6 +28,8 @@ public class BedService {
         return bedRepo.findById(id);
     }
 
+
+
     public void deleteById(long id){
         bedRepo.deleteById(id);
     }
@@ -35,6 +37,8 @@ public class BedService {
     public Bed getById(long id){
         return bedRepo.getOne(id);
     }
+
+
 
     public void deleteByBedNum(double bedNum){
         ArrayList<Bed> bedList = new ArrayList<Bed>();
@@ -57,9 +61,12 @@ public class BedService {
         return null;
     }
 
+
     public boolean isEmptyById(long id){
         return bedRepo.getOne(id).isEmpty();
     }
+
+
 
     public void save(Bed bed){
         bedRepo.save(bed);

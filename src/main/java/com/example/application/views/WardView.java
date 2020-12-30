@@ -8,6 +8,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -90,13 +91,8 @@ public class WardView extends VerticalLayout {
 
         addButton.addClickListener(e ->{
 
-            Patient patient = new Patient(nameIn.getValue(),bScoreIn.getValue(),bedNumIn.getValue());
+            Patient patient = new Patient(nameIn.getValue(),bScoreIn.getValue()/*,bedNumIn.getValue()*/);
             Bed bed = new Bed(bedNumIn.getValue(),false);
-
-            Random r = new Random();
-            r.nextInt(100);
-
-            patient.setTimeInPos(r.nextInt(100));
 
             patientService.save(patient);
             bed.setPatient(patient);
@@ -112,6 +108,8 @@ public class WardView extends VerticalLayout {
             nameIn.focus();
             bScoreIn.focus();
             bedNumIn.focus();
+
+
 
         });
 

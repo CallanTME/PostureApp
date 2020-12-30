@@ -16,32 +16,29 @@ public class Patient {
     private String name;
     private double bScore;
 
-    private double bedNum;
+    //private double bedNum;
 
 
-    private double timeInPos;
+
 
     public Patient(){
 
     }
 
-    public Patient(String name, double bScore, double bedNum){
+    public Patient(String name, double bScore/*, double bedNum*/){
         this.name = name;
         this.bScore = bScore;
-        this.bedNum = bedNum;
+        //this.bedNum = bedNum;
 
-        timeInPos = 0;
     }
 
-    /*public long getId() {
+    public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
     }
-
-     */
 
     public String getName() {
         return name;
@@ -59,6 +56,7 @@ public class Patient {
         this.bScore = bScore;
     }
 
+    /*
     public double getBedNum() {
         return bedNum;
     }
@@ -67,11 +65,5 @@ public class Patient {
         this.bedNum = bedNum;
     }
 
-    public double getTimeInPos() {
-        return timeInPos;
-    }
-
-    public void setTimeInPos(double timeInPos) {
-        this.timeInPos = timeInPos;
-    }
+     */
 }

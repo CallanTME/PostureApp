@@ -41,13 +41,32 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-        UserDetails user =
+        UserDetails user1 =
                 User.withUsername("Callan")
                         .password("{noop}password")
                         .roles("USER")
                         .build();
 
-        return new InMemoryUserDetailsManager(user);
+        UserDetails user2 =
+                User.withUsername("Olly")
+                        .password("{noop}password")
+                        .roles("USER")
+                        .build();
+
+        UserDetails user3 =
+                User.withUsername("Nikita")
+                        .password("{noop}password")
+                        .roles("USER")
+                        .build();
+
+        UserDetails user4 =
+                User.withUsername("Alice")
+                        .password("{noop}password")
+                        .roles("USER")
+                        .build();
+
+        return new InMemoryUserDetailsManager(user1, user2, user3, user4);
+
     }
 
     @Override
