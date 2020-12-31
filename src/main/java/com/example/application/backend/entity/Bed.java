@@ -69,7 +69,7 @@ public class Bed{
 
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/groupProject", "postgres", "dadsmells");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/", "postgres", "06AL12du");
         } catch (Exception p) {
             p.printStackTrace();
             System.err.println(p.getClass().getName() + ": " + p.getMessage());
@@ -78,7 +78,6 @@ public class Bed{
 
 
         try {
-
             stmt = c.createStatement();
             String sql = "select avg(left),avg(right),avg(under)\n" +
                     "from(select left,right,under\n" +
@@ -149,6 +148,14 @@ public class Bed{
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public Pressure getPreviousPressure() {
+        return previousPressure;
+    }
+
+    public Pressure getCurrentPressure() {
+        return currentPressure;
     }
 
 }
