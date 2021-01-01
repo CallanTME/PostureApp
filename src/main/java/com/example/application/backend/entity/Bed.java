@@ -25,7 +25,7 @@ public class Bed{
     private boolean isEmpty;
     private double timeInPos;
     private int count;
-    private int status;
+    private double status;
     private double timeInterval;
 
     @OneToOne
@@ -104,7 +104,7 @@ public class Bed{
 
     }
 
-    public int getStatus() {
+    public double getStatus() {
         return status;
     }
 
@@ -134,10 +134,23 @@ public class Bed{
         else if ((Math.abs(change_r) <= mindiff) || (Math.abs(change_l) <= mindiff)){
 
             count = count + 1;
-            int status = count*10;
+            double tempStatus = count*10;
 
-            switch()
-
+            if(patient.getbScore() >= 15)
+            {
+                this.status = tempStatus;
+            }
+            else if(patient.getbScore() == 13||patient.getbScore() == 14)
+            {
+                this.status = tempStatus*1.25;
+            }
+            else if(patient.getbScore() < 9)
+            {
+                this.status = tempStatus*2;
+            }
+            else {
+                this.status = tempStatus*1.5;
+            }
         }
         //If patient has moved
         else {
