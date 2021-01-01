@@ -4,20 +4,14 @@ package com.example.application.backend.entity;
 
 import com.example.application.backend.Pressure;
 
-import javax.persistence.*;
-import java.sql.Statement;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-
-import java.sql.*;
-
-
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
@@ -30,6 +24,9 @@ public class Bed{
     private double bedNum;
     private boolean isEmpty;
     private double timeInPos;
+    private int count;
+    private double status;
+    private double timeInterval;
 
     @OneToOne
     private Patient patient;
@@ -46,6 +43,7 @@ public class Bed{
         isEmpty = true;
         timeInPos = 0;
         id = Math.round(bedNum);
+        count = 0;
     }
 
     public Bed(double bedNum, boolean isEmpty){
@@ -53,6 +51,7 @@ public class Bed{
         this.isEmpty = isEmpty;
         timeInPos = 0;
         id = Math.round(bedNum);
+        count = 0;
     }
 
     public Bed(){
@@ -105,6 +104,63 @@ public class Bed{
 
     }
 
+    public double getStatus() {
+        return status;
+    }
+
+    public void setStatus() {
+
+        //Threshold for extreme position
+        double threshold = 2.0;
+
+        //Difference between current R and L pressures
+        double diff = currentPressure.getpLeft() - currentPressure.getpRight();
+
+        //Minimum difference for a patient to have moved
+        double mindiff = 1.0;
+
+        //Differences between the current and previous R and L pressures
+        double change_r = currentPressure.getpRight() - previousPressure.getpRight();
+        double change_l = currentPressure.getpLeft() - previousPressure.getpLeft();
+
+        //Checks for extreme pressure
+        if (Math.abs(diff) >= threshold ) {
+
+            this.status = 100;
+
+        }
+
+        //Checks if the patient has not moved
+        else if ((Math.abs(change_r) <= mindiff) || (Math.abs(change_l) <= mindiff)){
+
+            count = count + 1;
+            double tempStatus = count*10;
+
+            if(patient.getbScore() >= 15)
+            {
+                this.status = tempStatus;
+            }
+            else if(patient.getbScore() == 13||patient.getbScore() == 14)
+            {
+                this.status = tempStatus*1.25;
+            }
+            else if(patient.getbScore() < 9)
+            {
+                this.status = tempStatus*2;
+            }
+            else {
+                this.status = tempStatus*1.5;
+            }
+        }
+        //If patient has moved
+        else {
+
+            count = 0;
+            this.status = 0;
+        }
+
+    }
+
     public long getId() {
         return id;
     }
@@ -136,6 +192,8 @@ public class Bed{
     }
 
     public double getTimeInPos() {
+
+        this.timeInPos = count*timeInterval;
         return timeInPos;
     }
 
