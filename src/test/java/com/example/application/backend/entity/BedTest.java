@@ -6,6 +6,8 @@ import org.junit.*;
 import java.sql.*;
 
 public class BedTest {
+    private Bed bed;
+    private Patient patient;
 
     //need to use DBTest
     /*@BeforeClass
@@ -40,6 +42,11 @@ public class BedTest {
                 throwables.printStackTrace();
             }
         }*/
+    @Before
+    public void setUpData(){
+        bed =new Bed(3);
+        patient = new Patient("Ollie",13);
+    }
 
 
     @Test
@@ -57,6 +64,37 @@ public class BedTest {
         Assert.assertEquals(2, bed2.getId());
         Assert.assertEquals(0.0, bed2.getTimeInPos());
     }
+
+    @Test
+    public void test_setId(){
+        bed.setId(100100);
+        Assert.assertEquals(100100, bed.getId());
+    }
+
+    @Test
+    public void test_setStatus(){
+        //Check that it is empty by default
+        Assert.assertEquals(true, bed.isEmpty());
+
+        bed.setFull();
+        Assert.assertEquals(false, bed.isEmpty());
+        bed.setEmpty();
+        Assert.assertEquals(true, bed.isEmpty());
+    }
+
+    @Test
+    public void test_getTime_in_Position(){
+        bed.setTimeInPos(10.3);
+        Assert.assertEquals(10.3, bed.getTimeInPos());
+    }
+
+    @Test
+    public void test_getPatient(){
+        bed.setPatient(patient);
+        Assert.assertEquals(13, Math.round(bed.getPatient().getbScore()));
+        Assert.assertEquals("Ollie", bed.getPatient().getName());
+    }
+
 
     /*@Test
     public void test_GetPressureData(){
