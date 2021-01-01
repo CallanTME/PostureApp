@@ -1,5 +1,7 @@
 package com.example.application.backend.entity;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,7 +28,27 @@ public class Patient {
     }
 
     public Patient(String name, double bScore/*, double bedNum*/){
-        this.name = name;
+        //use a name formatting for easier data management
+        StringBuilder sb = new StringBuilder();
+        boolean space = true;
+
+        for (char c : name.toCharArray()){
+            if(Character.isLetter(c)){
+                if(space){
+                    c= Character.toTitleCase(c);
+                }
+                else{
+                    c= Character.toLowerCase(c);
+                }
+                space=false;
+            }
+            else{
+                space=true;
+            }
+            sb.append(c);
+        }
+
+        this.name = sb.toString();
         this.bScore = bScore;
         //this.bedNum = bedNum;
 
@@ -45,7 +67,27 @@ public class Patient {
     }
 
     public void setName(String name) {
-        this.name = name;
+        //use a name formatting for easier data management
+        StringBuilder sb = new StringBuilder();
+        boolean space = true;
+
+        for (char c : name.toCharArray()){
+            if(Character.isLetter(c)){
+                if(space){
+                    c= Character.toTitleCase(c);
+                }
+                else{
+                    c= Character.toLowerCase(c);
+                }
+                space=false;
+            }
+            else{
+                space=true;
+            }
+            sb.append(c);
+        }
+
+        this.name = sb.toString();
     }
 
     public double getbScore() {

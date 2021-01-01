@@ -4,10 +4,8 @@ package com.example.application.backend.entity;
 
 import com.example.application.backend.Pressure;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -207,6 +205,14 @@ public class Bed{
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public Pressure getPreviousPressure() {
+        return previousPressure;
+    }
+
+    public Pressure getCurrentPressure() {
+        return currentPressure;
     }
 
 }
