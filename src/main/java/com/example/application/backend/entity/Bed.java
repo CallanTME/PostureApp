@@ -77,18 +77,19 @@ public class Bed{
         try {
 
             stmt = c.createStatement();
-            String sql = "select avg(left),avg(right),avg(under)\n" +
-                    "from(select left,right,under\n" +
-                    "     from Info\n" +
-                    "     Order By ProductID desc\n" +
-                    "     limit 10\n" +
-                    "     where bed_num=" + bedNum + "\t);";
+            String sql = "select avg(\"left\") as avg1,avg(\"right\") as avg2,avg(under) as avg3 from(select \"left\",\"right\",under from pressuretable where bed_num = 1 Order By id desc\n" +
+                    "    limit 4)as notneeded";
             ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                tempData[0] = rs.getDouble("avg1");
+                tempData[1] = rs.getDouble("avg2");
+                tempData[2] = rs.getDouble("avg3");
+            }
 
-            tempData[0] = rs.getDouble("avg(left)");
-            tempData[1] = rs.getDouble("avg(right)");
-            tempData[2] = rs.getDouble("avg(under)");
-
+            String addData = "insert into pressuretable (bed_num,\"left\",\"right\",under)\n" +
+                    "select  1, (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,5);";
+            stmt.executeUpdate(addData);
+            //System.out.println("mission success!");
 
         }catch (Exception f) {
             f.printStackTrace();
