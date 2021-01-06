@@ -66,7 +66,10 @@ public class Bed{
 
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/groupProject", "postgres", "dadsmells");
+                      //  c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/groupProject", "postgres", "dadsmells");
+            c = DriverManager.getConnection("jdbc:postgresql://braden.ddns.net:4444/webApp", "braden", "ImperialBradenProject");
+            //c = DriverManager.getConnection("jdbc:postgresql://gamepi:5432/webApp","ollie", "smelly");
+
         } catch (Exception p) {
             p.printStackTrace();
             System.err.println(p.getClass().getName() + ": " + p.getMessage());
@@ -77,8 +80,8 @@ public class Bed{
         try {
 
             stmt = c.createStatement();
-            String sql = "select avg(\"left\") as avg1,avg(\"right\") as avg2,avg(under) as avg3 from(select \"left\",\"right\",under from pressuretable where bed_num = 1 Order By id desc\n" +
-                    "    limit 4)as notneeded";
+            String sql = "select avg(\"left\") as avg1,avg(\"right\") as avg2,avg(under) as avg3 from(select \"left\",\"right\",under from pressuretable where bed_num = "+bedNum+" Order By id desc\n" +
+                    "    limit 10)as notneeded";
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()){
                 tempData[0] = rs.getDouble("avg1");
@@ -87,7 +90,7 @@ public class Bed{
             }
 
             String addData = "insert into pressuretable (bed_num,\"left\",\"right\",under)\n" +
-                    "select  1, (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,5);";
+                    "select  "+ bedNum +", (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,5);";
             stmt.executeUpdate(addData);
             //System.out.println("mission success!");
 
