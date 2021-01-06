@@ -1,13 +1,15 @@
 
 package com.example.application.backend.service;
 
-        import com.example.application.backend.entity.Ward;
-        import com.example.application.backend.repository.WardRepo;
+import com.example.application.backend.entity.Ward;
+import com.example.application.backend.repository.WardRepo;
+import org.springframework.stereotype.Service;
 
-        import java.util.List;
-        import java.util.logging.Level;
-        import java.util.logging.Logger;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+@Service
 public class WardService {
     private static final Logger LOGGER = Logger.getLogger(WardService.class.getName());
     private WardRepo wardRepo;

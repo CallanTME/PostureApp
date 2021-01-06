@@ -1,5 +1,6 @@
 package com.example.application.security;
 
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,6 +42,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
+        UserDetails admin1=
+                User.withUsername("Alice")
+                    .password("{noop}password")
+                    .roles("ADMIN")
+                    .build();
+
         UserDetails user1 =
                 User.withUsername("Callan")
                         .password("{noop}password")
@@ -65,7 +72,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .roles("USER")
                         .build();
 
-        return new InMemoryUserDetailsManager(user1, user2, user3, user4);
+        return new InMemoryUserDetailsManager(user1, user2, user3, user4, admin1);
 
     }
 
