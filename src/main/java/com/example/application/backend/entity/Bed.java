@@ -92,6 +92,7 @@ public class Bed{
             String addData = "insert into pressuretable (bed_num,\"left\",\"right\",under)\n" +
                     "select  "+ bedNum +", (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,5);";
             stmt.executeUpdate(addData);
+            c.close();
             //System.out.println("mission success!");
 
         }catch (Exception f) {
