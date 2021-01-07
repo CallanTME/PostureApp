@@ -3,17 +3,17 @@ package com.example.application.backend.entity;
 import com.example.application.backend.FormatString;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @Entity
 public class Nurse implements FormatString {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int nurse_id;
-
+    @Email
     private String email;
-
     private String name;
-
     private String password;
 
     @ManyToOne
@@ -58,9 +58,18 @@ public class Nurse implements FormatString {
         return ward;
     }
 
-    public void setWardId(Ward ward) {
+    public void setWard(Ward ward) {
         this.ward = ward;
     }
+
+    public int getNurse_id() {
+        return nurse_id;
+    }
+
+    public void setNurse_id(int nurse_id) {
+        this.nurse_id = nurse_id;
+    }
+
 
     @Override
     public String FormatName(String name) {

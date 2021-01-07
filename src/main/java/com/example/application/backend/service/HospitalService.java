@@ -1,9 +1,7 @@
 package com.example.application.backend.service;
 
 import com.example.application.backend.entity.Hospital;
-import com.example.application.backend.entity.Patient;
 import com.example.application.backend.repository.HospitalRepo;
-import com.example.application.backend.repository.PatientRepo;
 import org.springframework.stereotype.Service;
 
 

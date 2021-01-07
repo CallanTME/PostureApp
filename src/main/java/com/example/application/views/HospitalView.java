@@ -9,6 +9,7 @@ import com.example.application.backend.service.WardService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -16,10 +17,13 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 
 //This view enables to save a hospital or a new ward within the hospital
 @Route("hospital")
 @PageTitle("Hospital and Ward View | Posture App")
+//@Secured("ROLE_Admin")
 public class HospitalView extends VerticalLayout {
     private HospitalService hospitalService;
     private WardService wardService;
@@ -40,7 +44,7 @@ public class HospitalView extends VerticalLayout {
         this.wardService = wardService;
 
         setAlignItems(Alignment.CENTER);
-        add(new H1("Admin: Hospital and Wards Login"));
+        add(new H1("Hospital and Wards Login"));
 
         zipcodeIn.setMaxLength(9);
         hospIdIn.setMaxLength(9);
@@ -64,6 +68,9 @@ public class HospitalView extends VerticalLayout {
             zipcodeIn.clear();
             nameIn.focus();
             zipcodeIn.focus();
+
+            Notification n= Notification.show("Hospital added to the Database");
+            add(n);
         });
 
         addWardButton.addClickListener(e ->{
@@ -76,6 +83,9 @@ public class HospitalView extends VerticalLayout {
             hospIdIn.clear();
             nameWardIn.focus();
             hospIdIn.focus();
+
+            Notification n= Notification.show("Ward added to the Database");
+            add(n);
         });
     }
 

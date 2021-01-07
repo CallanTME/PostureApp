@@ -8,7 +8,7 @@ import java.util.List;
 public class Ward {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int ward_id;
+    private long ward_id;
     private String ward_name;
     private int ward_size;
 
@@ -31,7 +31,7 @@ public class Ward {
     public Ward(){}
 
 
-    public int getWard_id() {
+    public long getWard_id() {
         return ward_id;
     }
     public String getWard_name(){return ward_name;}
