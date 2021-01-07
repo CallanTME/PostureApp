@@ -66,7 +66,6 @@ public class Bed{
 
         try {
             Class.forName("org.postgresql.Driver");
-            //  c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/groupProject", "postgres", "dadsmells");
             c = DriverManager.getConnection("jdbc:postgresql://braden.ddns.net:4444/webApp", "braden", "ImperialBradenProject");
             //c = DriverManager.getConnection("jdbc:postgresql://gamepi:5432/webApp","ollie", "smelly");
 
