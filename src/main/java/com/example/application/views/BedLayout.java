@@ -3,6 +3,7 @@ package com.example.application.views;
 import com.example.application.backend.entity.Bed;
 import com.example.application.backend.entity.Patient;
 import com.example.application.backend.service.PatientService;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
@@ -37,14 +38,17 @@ public class BedLayout extends VerticalLayout {
 
             TextField name = new TextField("Name");
             NumberField bScore = new NumberField("Braden Score");
+            TextField timeInPosField = new TextField("Time in pos");
             HorizontalLayout headerLine = new HorizontalLayout();
             HorizontalLayout infoLine = new HorizontalLayout();
 
-            ProgressBar progressBar = new ProgressBar(0,100,bed.getTimeInPos());
-            if(bed.getTimeInPos() < 33) {
+            //timeInPosField.setVisible(false);
+
+            ProgressBar progressBar = new ProgressBar(0,100,bed.getStatus());
+            if(bed.getStatus() < 33) {
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_SUCCESS);
             }
-            else if(bed.getTimeInPos() < 66){
+            else if(bed.getStatus() < 66){
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_CONTRAST);
             } else {
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_ERROR);
@@ -54,13 +58,16 @@ public class BedLayout extends VerticalLayout {
 
             name.setValue(bed.getPatient().getName());
             bScore.setValue(bed.getPatient().getbScore());
+            timeInPosField.setValue((int)Math.floor(bed.getTimeInPos()/60) + "h " + (int)Math.floor(bed.getTimeInPos()%60) + "m");
 
             name.setReadOnly(true);
             name.setWidth("175px");
             bScore.setWidth("100px");
             bScore.setReadOnly(true);
+            timeInPosField.setWidth("100px");
+            timeInPosField.setReadOnly(true);
 
-            infoLine.add(name,bScore);
+            infoLine.add(name,bScore,timeInPosField);
             add(
                     bedHeader,
                     infoLine,

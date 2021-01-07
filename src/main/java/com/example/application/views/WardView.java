@@ -3,12 +3,12 @@ package com.example.application.views;
 import com.example.application.backend.entity.Bed;
 import com.example.application.backend.entity.Patient;
 import com.example.application.backend.service.*;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -40,6 +40,7 @@ public class WardView extends VerticalLayout {
     public WardView(BedService bedService, PatientService patientService){
         this.bedService = bedService;
         this.patientService = patientService;
+
 
         setAlignItems(Alignment.CENTER);
         add(new H1("Ward 1"));
@@ -139,6 +140,27 @@ public class WardView extends VerticalLayout {
             idIn.clear();
             idIn.focus();
         });
+
+
+        UI.getCurrent().setPollInterval(10000);
+
+        UI.getCurrent().addPollListener(e ->{
+            ArrayList<Bed> bedList = new ArrayList<Bed>();
+            bedList.addAll(bedService.findAll());
+
+            for(Bed bed : bedList){
+                if(!bed.isEmpty()){
+                    bed.update();
+                }
+            }
+
+            bedService.deleteAll();
+            for(Bed bed : bedList){
+                bedService.save(bed);
+            }
+
+            refreshList();
+        });
     }
 
     private void refreshList(){
@@ -170,7 +192,7 @@ public class WardView extends VerticalLayout {
                 h2.add(boxLayout);
             } else if (tempBed.getBedNum() < 10){
                 boxLayout.add(bedLayout);
-                h3.add(boxLayout);;
+                h3.add(boxLayout);
             }
         }
 

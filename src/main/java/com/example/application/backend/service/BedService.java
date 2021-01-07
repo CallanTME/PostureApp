@@ -34,6 +34,10 @@ public class BedService {
         bedRepo.deleteById(id);
     }
 
+    public void deleteAll(){
+        bedRepo.deleteAll();
+    }
+
     public Bed getById(long id){
         return bedRepo.getOne(id);
     }

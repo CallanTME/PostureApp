@@ -14,6 +14,18 @@ public class Pressure {
 
     public Pressure(){};
 
+    public Pressure (double pLeft, double pRight, double pUnder){
+        this.pLeft = pLeft;
+        this.pRight = pRight;
+        this.pUnder = pUnder;
+    }
+
+    public void getVals(double temp_info[]){
+        pLeft = temp_info[0];
+        pRight = temp_info[1];
+        pUnder = temp_info[2];
+    }
+
     public double getpLeft() {
         return pLeft;
     }
