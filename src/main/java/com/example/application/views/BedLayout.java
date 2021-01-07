@@ -42,8 +42,6 @@ public class BedLayout extends VerticalLayout {
             HorizontalLayout headerLine = new HorizontalLayout();
             HorizontalLayout infoLine = new HorizontalLayout();
 
-            //timeInPosField.setVisible(false);
-
             ProgressBar progressBar = new ProgressBar(0,100,bed.getStatus());
             if(bed.getStatus() < 33) {
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_SUCCESS);
