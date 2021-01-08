@@ -13,16 +13,19 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.*;
 
 @Route("")
 @PageTitle("Ward View | Posture App")
+//@Secured("ROLE_USER")
 public class WardView extends VerticalLayout {
 
     private BedService bedService;
     private PatientService patientService;
 
+    private HorizontalLayout otherPages = new HorizontalLayout();
     private HorizontalLayout addLine = new HorizontalLayout();
     private HorizontalLayout h1 = new HorizontalLayout();
     private HorizontalLayout h2 = new HorizontalLayout();
@@ -37,10 +40,16 @@ public class WardView extends VerticalLayout {
     NumberField dischargeBedNumIn = new NumberField("Bed #");
     Button dischargeButton = new Button("Discharge");
 
+    Button accessAdmin = new Button ("Admin Page");
+    Button accessNurseAssignment = new Button ("Nurse Assignment");
+
     public WardView(BedService bedService, PatientService patientService){
         this.bedService = bedService;
         this.patientService = patientService;
 
+        otherPages.add(accessAdmin,accessNurseAssignment);
+        otherPages.setVerticalComponentAlignment(Alignment.START,accessAdmin);
+        add(otherPages);
 
         setAlignItems(Alignment.CENTER);
         add(new H1("Ward 1"));
@@ -89,6 +98,14 @@ public class WardView extends VerticalLayout {
         }
 
         add(addLine,h1,h2,h3);
+
+        accessAdmin.addClickListener(e->{
+            UI.getCurrent().navigate("hospital");
+        });
+
+        accessNurseAssignment.addClickListener(e->{
+            UI.getCurrent().navigate("nurse_assignment");
+        });
 
         addButton.addClickListener(e ->{
 
