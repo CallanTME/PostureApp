@@ -22,24 +22,25 @@ public class Bed{
     private double bedNum;
     private boolean isEmpty;
     private double timeInPos;
-    private int count;
+    private double count;
     private double status;
-    private double timeInterval;
+
 
     @OneToOne
     private Patient patient;
 
     @Transient
-    private Pressure previousPressure;
+    private Pressure previousPressure = new Pressure();
+    //private Pressure previousPressure = new Pressure(0,0,0);
 
     @Transient
-    private Pressure currentPressure;
+    private Pressure currentPressure = new Pressure();
+    //private Pressure currentPressure = new Pressure();
 
 
     public Bed(double bedNum){
         this.bedNum = bedNum;
         isEmpty = true;
-        timeInPos = 0;
         id = Math.round(bedNum);
         count = 0;
     }
@@ -47,7 +48,6 @@ public class Bed{
     public Bed(double bedNum, boolean isEmpty){
         this.bedNum = bedNum;
         this.isEmpty = isEmpty;
-        timeInPos = 0;
         id = Math.round(bedNum);
         count = 0;
     }
@@ -66,8 +66,8 @@ public class Bed{
 
         try {
             Class.forName("org.postgresql.Driver");
-                      //  c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/groupProject", "postgres", "dadsmells");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "06AL12du");
+
+            c = DriverManager.getConnection("jdbc:postgresql://braden.ddns.net:4444/webApp", "braden", "ImperialBradenProject");
             //c = DriverManager.getConnection("jdbc:postgresql://gamepi:5432/webApp","ollie", "smelly");
 
         } catch (Exception p) {
@@ -92,6 +92,7 @@ public class Bed{
             String addData = "insert into pressuretable (bed_num,\"left\",\"right\",under)\n" +
                     "select  "+ bedNum +", (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,5);";
             stmt.executeUpdate(addData);
+            c.close();
             //System.out.println("mission success!");
 
         }catch (Exception f) {
@@ -111,15 +112,17 @@ public class Bed{
     }
 
     public void setStatus() {
-
+        if(previousPressure == null){
+            previousPressure = currentPressure;
+        }
         //Threshold for extreme position
-        double threshold = 2.0;
+        double threshold = 70;
 
         //Difference between current R and L pressures
         double diff = currentPressure.getpLeft() - currentPressure.getpRight();
 
         //Minimum difference for a patient to have moved
-        double mindiff = 1.0;
+        double mindiff = 50;
 
         //Differences between the current and previous R and L pressures
         double change_r = currentPressure.getpRight() - previousPressure.getpRight();
@@ -128,7 +131,7 @@ public class Bed{
         //Checks for extreme pressure
         if (Math.abs(diff) >= threshold ) {
 
-            this.status = 100;
+            status = 100;
 
         }
 
@@ -136,31 +139,52 @@ public class Bed{
         else if ((Math.abs(change_r) <= mindiff) || (Math.abs(change_l) <= mindiff)){
 
             count = count + 1;
-            double tempStatus = count*10;
+            // *60 is to speed up by 60 times
+            timeInPos = count*0.166667*60;
+            // change position of low risk in 4h, *60 is to speed up by 60 times
+            double tempStatus = (count/1440)*60*100;
 
             if(patient.getbScore() >= 15)
             {
-                this.status = tempStatus;
+                status = tempStatus;
             }
             else if(patient.getbScore() == 13||patient.getbScore() == 14)
             {
-                this.status = tempStatus*1.25;
+                //change position in 3h 12m
+                status = tempStatus*1.25;
             }
             else if(patient.getbScore() < 9)
             {
-                this.status = tempStatus*2;
+                //change position in 2h
+                status = tempStatus*2;
             }
             else {
-                this.status = tempStatus*1.5;
+                //change position in 2h 40m
+                status = tempStatus*1.5;
+            }
+
+            if(status > 100){
+                status = 100;
             }
         }
         //If patient has moved
         else {
 
             count = 0;
-            this.status = 0;
+            timeInPos = 0;
+            status = 0;
         }
 
+    }
+
+    public void update(){
+        getPressureData();
+        setStatus();
+        previousPressure = currentPressure;
+    }
+
+    public double getCount() {
+        return count;
     }
 
     public long getId() {
@@ -170,8 +194,6 @@ public class Bed{
     public void setId(long id) {
         this.id = id;
     }
-
-
 
     public double getBedNum() {
         return bedNum;
@@ -194,8 +216,6 @@ public class Bed{
     }
 
     public double getTimeInPos() {
-
-        this.timeInPos = count*timeInterval;
         return timeInPos;
     }
 

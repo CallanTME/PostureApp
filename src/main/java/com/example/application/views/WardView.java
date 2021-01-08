@@ -157,6 +157,27 @@ public class WardView extends VerticalLayout {
             idIn.clear();
             idIn.focus();
         });
+
+
+        UI.getCurrent().setPollInterval(10000);
+
+        UI.getCurrent().addPollListener(e ->{
+            ArrayList<Bed> bedList = new ArrayList<Bed>();
+            bedList.addAll(bedService.findAll());
+
+            for(Bed bed : bedList){
+                if(!bed.isEmpty()){
+                    bed.update();
+                }
+            }
+
+            bedService.deleteAll();
+            for(Bed bed : bedList){
+                bedService.save(bed);
+            }
+
+            refreshList();
+        });
     }
 
     private void refreshList(){
@@ -188,7 +209,7 @@ public class WardView extends VerticalLayout {
                 h2.add(boxLayout);
             } else if (tempBed.getBedNum() < 10){
                 boxLayout.add(bedLayout);
-                h3.add(boxLayout);;
+                h3.add(boxLayout);
             }
         }
 
