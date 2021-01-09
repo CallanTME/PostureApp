@@ -94,7 +94,7 @@ public class Bed{
             stmt.executeUpdate(deleteData);
 
             String addData = "insert into pressuretable (bed_num,\"left\",\"right\",under)\n" +
-                    "select  "+ bedNum +", (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,5);";
+                    "select  "+ bedNum +", (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,10);";
             stmt.executeUpdate(addData);
 
 
