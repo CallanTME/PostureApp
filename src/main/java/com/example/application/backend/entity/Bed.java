@@ -88,10 +88,16 @@ public class Bed{
                 tempData[1] = rs.getDouble("avg2");
                 tempData[2] = rs.getDouble("avg3");
             }
+            String deleteData = "delete from pressuretable where\n" +
+                    "id=any(select id from pressuretable where bed_num = "+bedNum+"\n" +
+                    "order by id asc limit 10)";
+            stmt.executeUpdate(deleteData);
 
             String addData = "insert into pressuretable (bed_num,\"left\",\"right\",under)\n" +
                     "select  "+ bedNum +", (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,5);";
             stmt.executeUpdate(addData);
+
+
             c.close();
             //System.out.println("mission success!");
 
