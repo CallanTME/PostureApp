@@ -11,6 +11,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -28,6 +30,8 @@ public class WardView extends VerticalLayout {
     private HorizontalLayout h2 = new HorizontalLayout();
     private HorizontalLayout h3 = new HorizontalLayout();
 
+    //Binder<Patient> binder = new Binder<> (Patient.class);
+
     NumberField idIn = new NumberField("ID");
     TextField nameIn = new TextField("Name");
     NumberField bedNumIn = new NumberField("Bed #");
@@ -36,6 +40,9 @@ public class WardView extends VerticalLayout {
     Button addIdButton = new Button("Add by ID");
     NumberField dischargeBedNumIn = new NumberField("Bed #");
     Button dischargeButton = new Button("Discharge");
+
+    //Binder<Patient> binder = new BeanValidationBinder<>(Patient.class);
+
 
     public WardView(BedService bedService, PatientService patientService){
         this.bedService = bedService;
@@ -92,23 +99,29 @@ public class WardView extends VerticalLayout {
 
         addButton.addClickListener(e ->{
 
-            Patient patient = new Patient(nameIn.getValue(),bScoreIn.getValue()/*,bedNumIn.getValue()*/);
-            Bed bed = new Bed(bedNumIn.getValue(),false);
+//            binder.forField(nameIn)
+//                .asRequired("Every patient must have a name")
+//                .bind(nameIn, Patient::getName, Patient::setName);
+            if(nameIn.isEmpty() != false) {
 
-            patientService.save(patient);
-            bed.setPatient(patient);
+                Patient patient = new Patient(nameIn.getValue(), bScoreIn.getValue()/*,bedNumIn.getValue()*/);
+                Bed bed = new Bed(bedNumIn.getValue(), false);
 
-            bedService.deleteByBedNum(bedNumIn.getValue());
-            bedService.save(bed);
+                patientService.save(patient);
+                bed.setPatient(patient);
 
-            refreshList();
+                bedService.deleteByBedNum(bedNumIn.getValue());
+                bedService.save(bed);
 
-            nameIn.clear();
-            bScoreIn.clear();
-            bedNumIn.clear();
-            nameIn.focus();
-            bScoreIn.focus();
-            bedNumIn.focus();
+                refreshList();
+
+                nameIn.clear();
+                bScoreIn.clear();
+                bedNumIn.clear();
+                nameIn.focus();
+                bScoreIn.focus();
+                bedNumIn.focus();
+            }
 
 
 

@@ -1,5 +1,7 @@
 package com.example.application.backend.entity;
 
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Entity;
@@ -21,6 +23,8 @@ public class Patient {
 
     @NotNull
     private double bScore;
+
+
 
     public Patient(){
 
@@ -46,6 +50,7 @@ public class Patient {
             }
             sb.append(c);
         }
+
 
         this.name = sb.toString();
         this.bScore = bScore;
@@ -87,7 +92,9 @@ public class Patient {
         }
 
         this.name = sb.toString();
+
     }
+
 
     public double getbScore() {
         return bScore;
