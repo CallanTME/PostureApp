@@ -54,12 +54,12 @@ public class BedService {
         }
     }
 
-    public Optional<Bed> getByBedNum(double bedNum){
+    public Bed getByBedNum(double bedNum){
         ArrayList<Bed> bedList = new ArrayList<Bed>();
         bedRepo.findAll().stream().forEach(bedList::add);
         for(Bed bed : bedList){
             if (bed.getBedNum() == bedNum){
-                return Optional.of(bed);
+                return bed;
             }
         }
         return null;
