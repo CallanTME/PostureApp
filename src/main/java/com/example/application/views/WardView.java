@@ -4,10 +4,15 @@ import com.example.application.backend.entity.Bed;
 import com.example.application.backend.entity.Patient;
 import com.example.application.backend.service.*;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -48,12 +53,14 @@ public class WardView extends VerticalLayout {
         this.bedService = bedService;
         this.patientService = patientService;
 
+        createHeader();
+
         otherPages.add(accessAdmin,accessNurseAssignment);
         otherPages.setVerticalComponentAlignment(Alignment.START,accessAdmin);
         add(otherPages);
 
         setAlignItems(Alignment.CENTER);
-        add(new H1("Ward 1"));
+        //add(new H1("Ward 1"));
 
         bedNumIn.setHasControls(true);
         bedNumIn.setMin(1);
@@ -274,6 +281,19 @@ public class WardView extends VerticalLayout {
         }
 
         add(h1,h2,h3);
+    }
+
+    private void createHeader() {
+        H2 wardName = new H2("Ward 1");
+        Anchor logout = new Anchor("logout", "Log out");
+
+        HorizontalLayout header = new HorizontalLayout(wardName, logout);
+        header.expand(wardName);
+        header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        header.setWidth("95%");
+        header.addClassName("header");
+
+        add(header);
     }
 }
 
