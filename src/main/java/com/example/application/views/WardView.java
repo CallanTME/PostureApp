@@ -7,6 +7,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -109,26 +110,46 @@ public class WardView extends VerticalLayout {
 
         addButton.addClickListener(e ->{
 
-            Patient patient = new Patient(nameIn.getValue(),bScoreIn.getValue()/*,bedNumIn.getValue()*/);
-            Bed bed = new Bed(bedNumIn.getValue(),false);
+            if (nameIn.getValue().equals("") || bScoreIn.isEmpty() || bedNumIn.isEmpty()){
+                Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_CENTER);
+                emptyFieldError.open();
+            } else if(bedNumIn.getValue() > 9 || bedNumIn.getValue() < 1) {
+                Notification bedBoundsError = new Notification("Bed number is out of bounds", 3000, Notification.Position.TOP_CENTER);
+                bedBoundsError.open();
+                bedNumIn.clear();
+                bedNumIn.focus();
+            } else if (bScoreIn.getValue() < 1 || bScoreIn.getValue() > 24) {
+                Notification bScoreBoundsError = new Notification("Braden Score is out of bounds", 3000, Notification.Position.TOP_CENTER);
+                bScoreBoundsError.open();
+                bScoreIn.clear();
+                bScoreIn.focus();
+            } else {
+                Bed checkBed = bedService.getByBedNum(bedNumIn.getValue());
+                if (checkBed.isEmpty()) {
+                    Patient patient = new Patient(nameIn.getValue(), bScoreIn.getValue());
+                    Bed bed = new Bed(bedNumIn.getValue(), false);
 
-            patientService.save(patient);
-            bed.setPatient(patient);
+                    patientService.save(patient);
+                    bed.setPatient(patient);
 
-            bedService.deleteByBedNum(bedNumIn.getValue());
-            bedService.save(bed);
+                    bedService.deleteByBedNum(bedNumIn.getValue());
+                    bedService.save(bed);
 
-            refreshList();
+                    refreshList();
 
-            nameIn.clear();
-            bScoreIn.clear();
-            bedNumIn.clear();
-            nameIn.focus();
-            bScoreIn.focus();
-            bedNumIn.focus();
-
-
-
+                    nameIn.clear();
+                    bScoreIn.clear();
+                    bedNumIn.clear();
+                    nameIn.focus();
+                    bScoreIn.focus();
+                    bedNumIn.focus();
+                } else {
+                    Notification bedError = new Notification("This bed is already occupied", 3000, Notification.Position.TOP_CENTER);
+                    bedError.open();
+                    bedNumIn.clear();
+                    bedNumIn.focus();
+                }
+            }
         });
 
         dischargeButton.addClickListener(e ->{
