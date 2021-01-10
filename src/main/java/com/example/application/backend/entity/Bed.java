@@ -67,7 +67,7 @@ public class Bed{
         try {
             Class.forName("org.postgresql.Driver");
 
-            c = DriverManager.getConnection("jdbc:postgresql://braden.ddns.net:4444/webApp", "braden", "ImperialBradenProject");
+            c = DriverManager.getConnection("jdbc:postgresql://ec2-52-208-138-246.eu-west-1.compute.amazonaws.com:5432/d74qrk7q3mi6tl", "rtphbsmoqjjuas", "4e02e853823c22eba9f167d1ebb7759e7dd2c21d50743c5995e95cc08f57307b");
             //c = DriverManager.getConnection("jdbc:postgresql://gamepi:5432/webApp","ollie", "smelly");
 
         } catch (Exception p) {
@@ -81,17 +81,23 @@ public class Bed{
 
             stmt = c.createStatement();
             String sql = "select avg(\"left\") as avg1,avg(\"right\") as avg2,avg(under) as avg3 from(select \"left\",\"right\",under from pressuretable where bed_num = "+bedNum+" Order By id desc\n" +
-                    "    limit 10)as notneeded";
+                    "    limit 5)as notneeded";
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()){
                 tempData[0] = rs.getDouble("avg1");
                 tempData[1] = rs.getDouble("avg2");
                 tempData[2] = rs.getDouble("avg3");
             }
+            String deleteData = "delete from pressuretable where\n" +
+                    "id=any(select id from pressuretable where bed_num = "+bedNum+"\n" +
+                    "order by id asc limit 5)";
+            stmt.executeUpdate(deleteData);
 
             String addData = "insert into pressuretable (bed_num,\"left\",\"right\",under)\n" +
                     "select  "+ bedNum +", (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,5);";
             stmt.executeUpdate(addData);
+
+
             c.close();
             //System.out.println("mission success!");
 
