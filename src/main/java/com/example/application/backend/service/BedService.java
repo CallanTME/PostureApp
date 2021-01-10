@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class BedService {
 
+    @Autowired
     private BedRepo bedRepo;
 
     public BedService(BedRepo bedRepo){
