@@ -111,15 +111,15 @@ public class WardView extends VerticalLayout {
         addButton.addClickListener(e ->{
 
             if (nameIn.getValue().equals("") || bScoreIn.isEmpty() || bedNumIn.isEmpty()){
-                Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_CENTER);
+                Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
                 emptyFieldError.open();
             } else if(bedNumIn.getValue() > 9 || bedNumIn.getValue() < 1) {
-                Notification bedBoundsError = new Notification("Bed number is out of bounds", 3000, Notification.Position.TOP_CENTER);
+                Notification bedBoundsError = new Notification("Bed number is out of bounds", 3000, Notification.Position.TOP_END);
                 bedBoundsError.open();
                 bedNumIn.clear();
                 bedNumIn.focus();
             } else if (bScoreIn.getValue() < 1 || bScoreIn.getValue() > 24) {
-                Notification bScoreBoundsError = new Notification("Braden Score is out of bounds", 3000, Notification.Position.TOP_CENTER);
+                Notification bScoreBoundsError = new Notification("Braden Score is out of bounds", 3000, Notification.Position.TOP_END);
                 bScoreBoundsError.open();
                 bScoreIn.clear();
                 bScoreIn.focus();
@@ -144,7 +144,7 @@ public class WardView extends VerticalLayout {
                     bScoreIn.focus();
                     bedNumIn.focus();
                 } else {
-                    Notification bedError = new Notification("This bed is already occupied", 3000, Notification.Position.TOP_CENTER);
+                    Notification bedError = new Notification("This bed is already occupied", 3000, Notification.Position.TOP_END);
                     bedError.open();
                     bedNumIn.clear();
                     bedNumIn.focus();
@@ -153,30 +153,70 @@ public class WardView extends VerticalLayout {
         });
 
         dischargeButton.addClickListener(e ->{
-            Bed bed = new Bed(dischargeBedNumIn.getValue());
 
-            bedService.deleteByBedNum(dischargeBedNumIn.getValue());
-            bedService.save(bed);
+            if(dischargeBedNumIn.isEmpty()){
+                Notification emptyFieldError = new Notification("Please fill a bed number to discharge", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
 
-            refreshList();
+            } else if (dischargeBedNumIn.getValue() < 1 || dischargeBedNumIn.getValue() > 9){
+                Notification bedBoundsError = new Notification("Discharge bed number is out of bounds", 3000, Notification.Position.TOP_END);
+                bedBoundsError.open();
+                dischargeBedNumIn.clear();
+                dischargeBedNumIn.focus();
 
-            dischargeBedNumIn.clear();
-            dischargeBedNumIn.focus();
+            } else {
+                Bed checkBed = bedService.getByBedNum(dischargeBedNumIn.getValue());
+
+                if(checkBed.isEmpty()){
+                    Notification bedEmptyError = new Notification("This bed is already empty", 3000, Notification.Position.TOP_END);
+                    bedEmptyError.open();
+                    dischargeBedNumIn.clear();
+                    dischargeBedNumIn.focus();
+                } else {
+                    Bed bed = new Bed(dischargeBedNumIn.getValue());
+
+                    bedService.deleteByBedNum(dischargeBedNumIn.getValue());
+                    bedService.save(bed);
+
+                    refreshList();
+
+                    dischargeBedNumIn.clear();
+                    dischargeBedNumIn.focus();
+                }
+            }
         });
 
         addIdButton.addClickListener(e ->{
             long id = Math.round(idIn.getValue());
-            Bed bed = new Bed(bedNumIn.getValue(),false);
-            bed.setPatient(patientService.getById(id));
-            bedService.deleteByBedNum(bedNumIn.getValue());
-            bedService.save(bed);
 
-            refreshList();
+            if(idIn.isEmpty() || bedNumIn.isEmpty()){
+                Notification emptyFieldError = new Notification("Please fill in and ID and bed number", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
 
-            bedNumIn.clear();
-            bedNumIn.focus();
-            idIn.clear();
-            idIn.focus();
+            } else if(bedNumIn.getValue() > 9 || bedNumIn.getValue() < 1){
+                Notification bedBoundsError = new Notification("Bed number is out of bounds", 3000, Notification.Position.TOP_END);
+                bedBoundsError.open();
+                bedNumIn.clear();
+                bedNumIn.focus();
+            } else {
+                if (patientService.findById(id).isPresent()) {
+
+                    Bed bed = new Bed(bedNumIn.getValue(), false);
+                    bed.setPatient(patientService.getById(id));
+                    bedService.deleteByBedNum(bedNumIn.getValue());
+                    bedService.save(bed);
+
+                    refreshList();
+
+                    bedNumIn.clear();
+                    bedNumIn.focus();
+                    idIn.clear();
+                    idIn.focus();
+                } else {
+                    Notification noIdError = new Notification("This ID does not exist", 3000, Notification.Position.TOP_END);
+                    noIdError.open();
+                }
+            }
         });
 
 
