@@ -187,18 +187,17 @@ public class WardView extends VerticalLayout {
         });
 
         addIdButton.addClickListener(e ->{
-            long id = Math.round(idIn.getValue());
 
             if(idIn.isEmpty() || bedNumIn.isEmpty()){
                 Notification emptyFieldError = new Notification("Please fill in and ID and bed number", 3000, Notification.Position.TOP_END);
                 emptyFieldError.open();
-
             } else if(bedNumIn.getValue() > 9 || bedNumIn.getValue() < 1){
                 Notification bedBoundsError = new Notification("Bed number is out of bounds", 3000, Notification.Position.TOP_END);
                 bedBoundsError.open();
                 bedNumIn.clear();
                 bedNumIn.focus();
             } else {
+                long id = Math.round(idIn.getValue());
                 if (patientService.findById(id).isPresent()) {
 
                     Bed bed = new Bed(bedNumIn.getValue(), false);
