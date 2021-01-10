@@ -81,7 +81,7 @@ public class Bed{
 
             stmt = c.createStatement();
             String sql = "select avg(\"left\") as avg1,avg(\"right\") as avg2,avg(under) as avg3 from(select \"left\",\"right\",under from pressuretable where bed_num = "+bedNum+" Order By id desc\n" +
-                    "    limit 10)as notneeded";
+                    "    limit 5)as notneeded";
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()){
                 tempData[0] = rs.getDouble("avg1");
@@ -90,11 +90,11 @@ public class Bed{
             }
             String deleteData = "delete from pressuretable where\n" +
                     "id=any(select id from pressuretable where bed_num = "+bedNum+"\n" +
-                    "order by id asc limit 10)";
+                    "order by id asc limit 5)";
             stmt.executeUpdate(deleteData);
 
             String addData = "insert into pressuretable (bed_num,\"left\",\"right\",under)\n" +
-                    "select  "+ bedNum +", (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,10);";
+                    "select  "+ bedNum +", (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,5);";
             stmt.executeUpdate(addData);
 
 
