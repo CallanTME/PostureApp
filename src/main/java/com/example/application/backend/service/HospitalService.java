@@ -32,5 +32,4 @@ public class HospitalService {
         }
         hospitalRepo.save(hospital);
     }
-
 }

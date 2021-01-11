@@ -138,16 +138,16 @@ public class WardView extends VerticalLayout {
             // checks that the necessary fields all have input
             if (nameIn.getValue().equals("") || bScoreIn.isEmpty() || bedNumIn.isEmpty()){
                 // provides a notification to tell the user of the error
-                Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
+                Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_CENTER);
                 emptyFieldError.open();
             // checks that the number fields have numbers within bounds
             } else if(bedNumIn.getValue() > 9 || bedNumIn.getValue() < 1) {
-                Notification bedBoundsError = new Notification("Bed number is out of bounds", 3000, Notification.Position.TOP_END);
+                Notification bedBoundsError = new Notification("Bed number is out of bounds", 3000, Notification.Position.TOP_CENTER);
                 bedBoundsError.open();
                 bedNumIn.clear();
                 bedNumIn.focus();
             } else if (bScoreIn.getValue() < 1 || bScoreIn.getValue() > 24) {
-                Notification bScoreBoundsError = new Notification("Braden Score is out of bounds", 3000, Notification.Position.TOP_END);
+                Notification bScoreBoundsError = new Notification("Braden Score is out of bounds", 3000, Notification.Position.TOP_CENTER);
                 bScoreBoundsError.open();
                 bScoreIn.clear();
                 bScoreIn.focus();
@@ -184,7 +184,7 @@ public class WardView extends VerticalLayout {
 
                 } else {
                     // if the bed is already full this notifies the user and does not add the patient
-                    Notification bedError = new Notification("This bed is already occupied", 3000, Notification.Position.TOP_END);
+                    Notification bedError = new Notification("This bed is already occupied", 3000, Notification.Position.TOP_CENTER);
                     bedError.open();
                     bedNumIn.clear();
                     bedNumIn.focus();
@@ -197,11 +197,11 @@ public class WardView extends VerticalLayout {
 
             // checks if the bed number input it empty
             if(dischargeBedNumIn.isEmpty()){
-                Notification emptyFieldError = new Notification("Please fill a bed number to discharge", 3000, Notification.Position.TOP_END);
+                Notification emptyFieldError = new Notification("Please fill a bed number to discharge", 3000, Notification.Position.TOP_CENTER);
                 emptyFieldError.open();
             // checks if the bed number inputted is already in bounds
             } else if (dischargeBedNumIn.getValue() < 1 || dischargeBedNumIn.getValue() > 9){
-                Notification bedBoundsError = new Notification("Discharge bed number is out of bounds", 3000, Notification.Position.TOP_END);
+                Notification bedBoundsError = new Notification("Discharge bed number is out of bounds", 3000, Notification.Position.TOP_CENTER);
                 bedBoundsError.open();
                 dischargeBedNumIn.clear();
                 dischargeBedNumIn.focus();
@@ -212,7 +212,7 @@ public class WardView extends VerticalLayout {
 
                 // checks if the bed is occupied
                 if(checkBed.isEmpty()){
-                    Notification bedEmptyError = new Notification("This bed is already empty", 3000, Notification.Position.TOP_END);
+                    Notification bedEmptyError = new Notification("This bed is already empty", 3000, Notification.Position.TOP_CENTER);
                     bedEmptyError.open();
                     dischargeBedNumIn.clear();
                     dischargeBedNumIn.focus();
@@ -238,10 +238,10 @@ public class WardView extends VerticalLayout {
 
             // checks to make sure the input is valid
             if(idIn.isEmpty() || bedNumIn.isEmpty()){
-                Notification emptyFieldError = new Notification("Please fill in and ID and bed number", 3000, Notification.Position.TOP_END);
+                Notification emptyFieldError = new Notification("Please fill in and ID and bed number", 3000, Notification.Position.TOP_CENTER);
                 emptyFieldError.open();
             } else if(bedNumIn.getValue() > 9 || bedNumIn.getValue() < 1){
-                Notification bedBoundsError = new Notification("Bed number is out of bounds", 3000, Notification.Position.TOP_END);
+                Notification bedBoundsError = new Notification("Bed number is out of bounds", 3000, Notification.Position.TOP_CENTER);
                 bedBoundsError.open();
                 bedNumIn.clear();
                 bedNumIn.focus();
@@ -267,7 +267,7 @@ public class WardView extends VerticalLayout {
                     idIn.focus();
                 } else {
                     // if the id is not in the database this notifies the user
-                    Notification noIdError = new Notification("This ID does not exist", 3000, Notification.Position.TOP_END);
+                    Notification noIdError = new Notification("This ID does not exist", 3000, Notification.Position.TOP_CENTER);
                     noIdError.open();
                 }
             }
