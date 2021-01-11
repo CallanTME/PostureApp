@@ -20,35 +20,43 @@ import com.vaadin.flow.data.binder.Binder;
 public class BedLayout extends VerticalLayout {
 
     //NumberField bedNum = new NumberField();
-    //double bedNum;
+    double bedNum;
 
     public BedLayout(Bed bed){
 
+        // creates a layout for the header for each bed
         VerticalLayout bedHeader = new VerticalLayout();
         bedHeader.setAlignItems(Alignment.CENTER);
+        // adds a bed number title to each header
         bedHeader.add(new H3("Bed " + (int)bed.getBedNum()));
 
         if(bed.isEmpty()){
-
+            // if the bed is empty it adds and empty bed layout
             add(
                     bedHeader,
                     new Label("This Bed is Empty")
             );
         } else {
 
+            // adds fields to show the name, braden score and time on position of the patient
             TextField name = new TextField("Name");
             NumberField bScore = new NumberField("Braden Score");
             TextField timeInPosField = new TextField("Time in pos");
             HorizontalLayout headerLine = new HorizontalLayout();
             HorizontalLayout infoLine = new HorizontalLayout();
 
+            // creates the progress bar and sets the status of it from the bed
             ProgressBar progressBar = new ProgressBar(0,100,bed.getStatus());
+            // changes the colour of the bar based on its status
             if(bed.getStatus() < 33) {
+                // bar is green
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_SUCCESS);
             }
             else if(bed.getStatus() < 66){
+                // bar is black
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_CONTRAST);
             } else {
+                // bar is red
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_ERROR);
             }
 
