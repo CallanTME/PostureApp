@@ -9,10 +9,14 @@ import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.spring.SpringServlet;
 import kotlin.jvm.functions.Function0;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +42,7 @@ import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @WebAppConfiguration
@@ -62,5 +67,24 @@ public class WardViewTest {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx, uiFactory);
         MockVaadin.setup(uiFactory, servlet);
     }
+
+    @AfterEach
+    public void tearDown() {
+        MockVaadin.tearDown();
+    }
+
+    @Test
+    public void placeOrder() {
+        _setValue(_get(TextField.class, spec -> spec.withCaption("Name")), "Nikita");
+        _setValue(NumberField.class, spec);
+        _setValue(_get(ComboBox.class, spec -> spec.withCaption("ID")), "Small");
+        _click(_get(Button.class, spec -> spec.withCaption("Place order")));
+
+        final List<TShirtOrder> all = repo.findAll();
+        assertEquals("orders=" + all, 1, all.size());
+        assertEquals("Foo", all.get(0).getName());
+    }
+
+
 
 }
