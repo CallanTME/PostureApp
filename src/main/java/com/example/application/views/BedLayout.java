@@ -19,8 +19,8 @@ import com.vaadin.flow.data.binder.Binder;
 
 public class BedLayout extends VerticalLayout {
 
-    //NumberField bedNum = new NumberField();
-    double bedNum;
+    // This field allows binding of a bed object to this layout
+    NumberField bedNum = new NumberField();
 
     public BedLayout(Bed bed){
 
@@ -60,12 +60,16 @@ public class BedLayout extends VerticalLayout {
                 progressBar.addThemeVariants(ProgressBarVariant.LUMO_ERROR);
             }
 
+            // formatting of the progress bar
             progressBar.setHeight("20px");
 
+            // sets the value of the fields from the patient linked to the bed
             name.setValue(bed.getPatient().getName());
             bScore.setValue(bed.getPatient().getbScore());
+            // converts the time in position from minutes to hours and minutes
             timeInPosField.setValue((int)Math.floor(bed.getTimeInPos()/60) + "h " + (int)Math.floor(bed.getTimeInPos()%60) + "m");
 
+            // formatting of the fields
             name.setReadOnly(true);
             name.setWidth("175px");
             bScore.setWidth("100px");
@@ -73,7 +77,9 @@ public class BedLayout extends VerticalLayout {
             timeInPosField.setWidth("100px");
             timeInPosField.setReadOnly(true);
 
+            // adds the fields to a layout
             infoLine.add(name,bScore,timeInPosField);
+            // adds all the layouts and components to the bed layout
             add(
                     bedHeader,
                     infoLine,
@@ -81,6 +87,7 @@ public class BedLayout extends VerticalLayout {
             );
         }
 
+        // this binds a bed object to this layout by matching variables with matching names
         Binder <Bed> bedBinder = new Binder<>(Bed.class);
         bedBinder.bindInstanceFields(this);
         bedBinder.setBean(bed);
