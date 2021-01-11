@@ -19,8 +19,8 @@ import com.vaadin.flow.data.binder.Binder;
 
 public class BedLayout extends VerticalLayout {
 
-    NumberField bedNum = new NumberField();
-
+    //NumberField bedNum = new NumberField();
+    //double bedNum;
 
     public BedLayout(Bed bed){
 
