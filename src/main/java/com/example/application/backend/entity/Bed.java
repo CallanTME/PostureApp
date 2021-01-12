@@ -123,7 +123,7 @@ public class Bed{
         double diff = currentPressure.getpLeft() - currentPressure.getpRight();
 
         //Minimum difference for a patient to have moved
-        double mindiff = 50;
+        double mindiff = 60;
 
         //Differences between the current and previous R and L pressures
         double change_r = currentPressure.getpRight() - previousPressure.getpRight();
