@@ -53,6 +53,7 @@ public class WardView extends VerticalLayout {
     Button addIdButton = new Button("Add by ID");
     NumberField dischargeBedNumIn = new NumberField("Bed #");
     Button dischargeButton = new Button("Discharge");
+    Button resetButton = new Button("Reset");
 
     // buttons to access the other page
     Button accessAdmin = new Button ("Admin Page");
@@ -88,10 +89,11 @@ public class WardView extends VerticalLayout {
         // changing the button colours and themes
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         dischargeButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
+        resetButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
         addIdButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_CONTRAST);
 
         addLine.setAlignItems(Alignment.BASELINE);
-        addLine.add(idIn,nameIn,bedNumIn,bScoreIn,addButton,addIdButton,dischargeBedNumIn,dischargeButton);
+        addLine.add(idIn,nameIn,bedNumIn,bScoreIn,addButton,addIdButton,dischargeBedNumIn,dischargeButton,resetButton);
 
         // initializes 9 empty beds when the app is run
         for(int i = 1;i < 4;i++) {
@@ -231,6 +233,40 @@ public class WardView extends VerticalLayout {
                     dischargeBedNumIn.focus();
                 }
             }
+        });
+
+        resetButton.addClickListener(e ->{
+                    if(dischargeBedNumIn.isEmpty()){
+                        Notification emptyFieldError = new Notification("Please fill a bed number to discharge", 3000, Notification.Position.TOP_CENTER);
+                        emptyFieldError.open();
+                        // checks if the bed number inputted is already in bounds
+                    } else if (dischargeBedNumIn.getValue() < 1 || dischargeBedNumIn.getValue() > 9){
+                        Notification bedBoundsError = new Notification("Discharge bed number is out of bounds", 3000, Notification.Position.TOP_CENTER);
+                        bedBoundsError.open();
+                        dischargeBedNumIn.clear();
+                        dischargeBedNumIn.focus();
+
+                    } else {
+                        Bed checkBed = bedService.getByBedNum(dischargeBedNumIn.getValue());
+
+                        if(checkBed.isEmpty()){
+                            Notification bedEmptyError = new Notification("This bed is empty", 3000, Notification.Position.TOP_CENTER);
+                            bedEmptyError.open();
+                            dischargeBedNumIn.clear();
+                            dischargeBedNumIn.focus();
+                        } else {
+                            Bed bed = bedService.getByBedNum(dischargeBedNumIn.getValue());
+                            bed.reset();
+
+                            bedService.deleteByBedNum(dischargeBedNumIn.getValue());
+                            bedService.save(bed);
+
+                            refreshList();
+
+                            dischargeBedNumIn.clear();
+                            dischargeBedNumIn.focus();
+                        }
+                    }
         });
 
         // code exectued when the add by id button is clicked
