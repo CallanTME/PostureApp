@@ -203,7 +203,7 @@ public class WardView extends VerticalLayout {
                 emptyFieldError.open();
             // checks if the bed number inputted is already in bounds
             } else if (dischargeBedNumIn.getValue() < 1 || dischargeBedNumIn.getValue() > 9){
-                Notification bedBoundsError = new Notification("Discharge bed number is out of bounds", 3000, Notification.Position.TOP_CENTER);
+                Notification bedBoundsError = new Notification("This bed number is out of bounds", 3000, Notification.Position.TOP_CENTER);
                 bedBoundsError.open();
                 dischargeBedNumIn.clear();
                 dischargeBedNumIn.focus();
@@ -237,11 +237,11 @@ public class WardView extends VerticalLayout {
 
         resetButton.addClickListener(e ->{
                     if(dischargeBedNumIn.isEmpty()){
-                        Notification emptyFieldError = new Notification("Please fill a bed number to discharge", 3000, Notification.Position.TOP_CENTER);
+                        Notification emptyFieldError = new Notification("Please fill a bed number to reset", 3000, Notification.Position.TOP_CENTER);
                         emptyFieldError.open();
                         // checks if the bed number inputted is already in bounds
                     } else if (dischargeBedNumIn.getValue() < 1 || dischargeBedNumIn.getValue() > 9){
-                        Notification bedBoundsError = new Notification("Discharge bed number is out of bounds", 3000, Notification.Position.TOP_CENTER);
+                        Notification bedBoundsError = new Notification("This bed number is out of bounds", 3000, Notification.Position.TOP_CENTER);
                         bedBoundsError.open();
                         dischargeBedNumIn.clear();
                         dischargeBedNumIn.focus();
