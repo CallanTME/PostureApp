@@ -4,6 +4,7 @@ import com.example.application.backend.entity.Nurse;
 import com.example.application.backend.entity.Ward;
 import com.example.application.backend.service.NurseService;
 import com.example.application.backend.service.WardService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
@@ -24,14 +25,17 @@ public class NurseView extends VerticalLayout {
     private NurseService nurseService;
     private WardService wardService;
 
+    private HorizontalLayout otherPages = new HorizontalLayout();
     private HorizontalLayout addNurse = new HorizontalLayout();
     private HorizontalLayout assignN = new HorizontalLayout();
 
-    NumberField nurseId = new NumberField("Nurse Id");
+    Button mainPage = new Button ("Main Page");
+
+    TextField nurseId = new TextField("Nurse Id");
     TextField nameIn = new TextField("Nurse Name");
     TextField nurseEmail = new TextField("Nurse Email");
-    NumberField wardId = new NumberField("Enter the ward Id");
-    NumberField wardId1 = new NumberField("Enter the ward Id");
+    TextField wardId = new TextField("Enter the ward Id");
+    TextField wardId1 = new TextField("Enter the ward Id");
     //TextField createPassword = new TextField("Create a password");
     Button addNurseButton = new Button("Add New Nurse and Assign");
     Button assignNurseButton = new Button("Assign Nurse to Ward");
@@ -40,6 +44,10 @@ public class NurseView extends VerticalLayout {
     public NurseView (NurseService nurseService,WardService wardService){
         this.nurseService=nurseService;
         this.wardService = wardService;
+
+        otherPages.add(mainPage);
+        otherPages.setVerticalComponentAlignment(Alignment.START,mainPage);
+        add(otherPages);
 
         setAlignItems(Alignment.CENTER);
         add(new H1("Nurse Login and assigmnent"));
@@ -57,38 +65,81 @@ public class NurseView extends VerticalLayout {
         add(new H3("Reassign Nurse to ward"));
         add(assignN);
 
+
         addNurseButton.addClickListener(e ->{
+            String email= nurseEmail.getValue();
+            boolean c_email = false;
+            for (int i=0;i<email.length();i++){
+                if (email.charAt(i)=='@'){
+                    c_email=true;
+                }
+            }
 
-            Nurse nurse = new Nurse(nameIn.getValue(),nurseEmail.getValue());
-            nurse.setWard(wardService.getById(Math.round(wardId.getValue())));
+            if (nameIn.getValue().equals("") || nurseEmail.getValue().equals("") || wardId.getValue().equals("")) {
+                Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
+            }
 
-            nurseService.save(nurse);
+            else if(wardService.getById(Math.round(Float.parseFloat(wardId.getValue())))==null){
+                Notification emptyFieldError = new Notification("This ward does not exist", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
+            }
 
-            nameIn.clear();
-            nurseEmail.clear();
-            wardId.clear();
-            nameIn.focus();
-            nurseEmail.focus();
-            wardId.focus();
+            else if (!c_email){
+                Notification emptyFieldError = new Notification("Please enter a correct email", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
+            }
 
-            Notification n= Notification.show("Nurse added to the Database");
-            add(n);
+            else {
+                Nurse nurse = new Nurse(nameIn.getValue(), nurseEmail.getValue());
+                nurse.setWard(wardService.getById(Math.round(Float.parseFloat(wardId.getValue()))));
+
+                nurseService.save(nurse);
+
+                nameIn.clear();
+                nurseEmail.clear();
+                wardId.clear();
+                nameIn.focus();
+                nurseEmail.focus();
+                wardId.focus();
+
+                Notification n = Notification.show("Nurse added to the Database");
+                add(n);
+            }
         });
 
         assignNurseButton.addClickListener(e ->{
-            Ward ward = wardService.getById(Math.round(wardId1.getValue()));
-            Nurse nurse = nurseService.getById(Math.round(nurseId.getValue()));
-            nurseService.deleteById(Math.round(nurseId.getValue()));
-            nurse.setWard(ward);
-            nurseService.save(nurse);
 
-            wardId1.clear();
-            nurseId.clear();
-            wardId1.focus();
-            nurseId.focus();
+            if (wardId1.getValue().equals("")|| nurseId.getValue().equals("")) {
+                Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
+            }
 
-            Notification n= Notification.show("Nurse reassigned");
-            add(n);
+            else if(wardService.getById(Math.round(Float.parseFloat(wardId1.getValue())))==null){
+                Notification emptyFieldError = new Notification("This ward Id does not exist", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
+            }
+
+            else if(nurseService.getById(Math.round(Float.parseFloat(nurseId.getValue())))==null){
+                Notification emptyFieldError = new Notification("This nurse Id does not exist", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
+            }
+
+            else {
+                Ward ward = wardService.getById(Math.round(Float.parseFloat(wardId1.getValue())));
+                Nurse nurse = nurseService.getById(Math.round(Float.parseFloat(nurseId.getValue())));
+                nurseService.deleteById(Math.round(Float.parseFloat(nurseId.getValue())));
+                nurse.setWard(ward);
+                nurseService.save(nurse);
+
+                wardId1.clear();
+                nurseId.clear();
+                wardId1.focus();
+                nurseId.focus();
+
+                Notification n = Notification.show("Nurse reassigned");
+                add(n);
+            }
         });
 
 

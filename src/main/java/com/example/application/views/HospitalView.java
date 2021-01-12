@@ -28,20 +28,27 @@ public class HospitalView extends VerticalLayout {
     private HospitalService hospitalService;
     private WardService wardService;
 
+    private HorizontalLayout otherPages = new HorizontalLayout();
     private HorizontalLayout addHospital = new HorizontalLayout();
     private HorizontalLayout addWard = new HorizontalLayout();
+
+    Button mainPage = new Button ("Main Page");
 
     TextField nameIn = new TextField("Hospital Name");
     TextField zipcodeIn = new TextField("Hospital Zipcode");
     Button addHospitalButton = new Button("Add New Hospital");
 
-    NumberField hospIdIn = new NumberField("Hospital Id");
+    TextField hospIdIn = new TextField("Hospital Id");
     TextField nameWardIn = new TextField("Ward Name");
     Button addWardButton = new Button("Add New Ward");
 
     public HospitalView( HospitalService hospitalService, WardService wardService) {
         this.hospitalService = hospitalService;
         this.wardService = wardService;
+
+        otherPages.add(mainPage);
+        otherPages.setVerticalComponentAlignment(Alignment.START,mainPage);
+        add(otherPages);
 
         setAlignItems(Alignment.CENTER);
         add(new H1("Hospital and Wards Login"));
@@ -58,34 +65,53 @@ public class HospitalView extends VerticalLayout {
 
         add(addHospital,addWard);
 
+
+
         addHospitalButton.addClickListener(e ->{
+            if (nameIn.getValue().equals("") || zipcodeIn.getValue().equals("")) {
+                Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
+            }
+            else {
+                Hospital hospital = new Hospital(nameIn.getValue(), zipcodeIn.getValue());
 
-            Hospital hospital = new Hospital(nameIn.getValue(),zipcodeIn.getValue());
+                hospitalService.save(hospital);
 
-            hospitalService.save(hospital);
+                nameIn.clear();
+                zipcodeIn.clear();
+                nameIn.focus();
+                zipcodeIn.focus();
 
-            nameIn.clear();
-            zipcodeIn.clear();
-            nameIn.focus();
-            zipcodeIn.focus();
-
-            Notification n= Notification.show("Hospital added to the Database");
-            add(n);
+                Notification n = Notification.show("Hospital added to the Database", 3000, Notification.Position.TOP_END);
+                add(n);
+            }
         });
 
         addWardButton.addClickListener(e ->{
 
-            Ward ward = new Ward(nameWardIn.getValue(),hospitalService.getById(Math.round(hospIdIn.getValue())));
+            if (hospIdIn.getValue().equals("") || nameWardIn.getValue().equals("")) {
+                Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
+            }
 
-            wardService.save(ward);
 
-            nameWardIn.clear();
-            hospIdIn.clear();
-            nameWardIn.focus();
-            hospIdIn.focus();
+            /*if(!hospitalService.getById(Math.round(hospIdIn.getValue()))){
+                Notification n= Notification.show("This Hospital Id doesn't exist");
+                n.open();
+            }*/
+            else {
+                Ward ward = new Ward(nameWardIn.getValue(), hospitalService.getById(Math.round(Float.parseFloat(hospIdIn.getValue()))));
 
-            Notification n= Notification.show("Ward added to the Database");
-            add(n);
+                wardService.save(ward);
+
+                nameWardIn.clear();
+                hospIdIn.clear();
+                nameWardIn.focus();
+                hospIdIn.focus();
+
+                Notification notif_added = Notification.show("Ward added to the Database");
+                notif_added.open();
+            }
         });
     }
 
