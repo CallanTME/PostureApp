@@ -13,12 +13,9 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 
 //This view enables to save a hospital or a new ward within the hospital
 @Route("hospital")
@@ -32,13 +29,12 @@ public class HospitalView extends VerticalLayout {
     private HorizontalLayout addHospital = new HorizontalLayout();
     private HorizontalLayout addWard = new HorizontalLayout();
 
-    Button mainPage = new Button ("Main Page");
 
     TextField nameIn = new TextField("Hospital Name");
     TextField zipcodeIn = new TextField("Hospital Zipcode");
     Button addHospitalButton = new Button("Add New Hospital");
 
-    TextField hospIdIn = new TextField("Hospital Id");
+    TextField hospZipIn = new TextField("Hospital Zipcode");
     TextField nameWardIn = new TextField("Ward Name");
     Button addWardButton = new Button("Add New Ward");
 
@@ -46,22 +42,19 @@ public class HospitalView extends VerticalLayout {
         this.hospitalService = hospitalService;
         this.wardService = wardService;
 
-        otherPages.add(mainPage);
-        otherPages.setVerticalComponentAlignment(Alignment.START,mainPage);
-        add(otherPages);
 
         setAlignItems(Alignment.CENTER);
         add(new H1("Hospital and Wards Login"));
 
         zipcodeIn.setMaxLength(9);
-        hospIdIn.setMaxLength(9);
+        hospZipIn.setMaxLength(9);
         addHospitalButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         addWardButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
 
         addHospital.setAlignItems(FlexComponent.Alignment.BASELINE);
         addWard.setAlignItems(FlexComponent.Alignment.BASELINE);
         addHospital.add(nameIn,zipcodeIn,addHospitalButton);
-        addWard.add(hospIdIn,nameWardIn,addWardButton);
+        addWard.add(hospZipIn,nameWardIn,addWardButton);
 
         add(addHospital,addWard);
 
@@ -89,30 +82,58 @@ public class HospitalView extends VerticalLayout {
 
         addWardButton.addClickListener(e ->{
 
-            if (hospIdIn.getValue().equals("") || nameWardIn.getValue().equals("")) {
+            String zip = hospZipIn.getValue();
+            zip = formatZip(zip);
+
+            if (hospZipIn.getValue().equals("") || nameWardIn.getValue().equals("")) {
                 Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
                 emptyFieldError.open();
             }
 
+            else if (hospitalService.zipsearch(zip)==null){
+                Notification emptyFieldError = new Notification("This postcode is not correct, enter a hospital first", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
+            }
 
-            /*if(!hospitalService.getById(Math.round(hospIdIn.getValue()))){
-                Notification n= Notification.show("This Hospital Id doesn't exist");
-                n.open();
-            }*/
             else {
-                Ward ward = new Ward(nameWardIn.getValue(), hospitalService.getById(Math.round(Float.parseFloat(hospIdIn.getValue()))));
-
+                Ward ward = new Ward(nameWardIn.getValue(), hospitalService.zipsearch(zip));
                 wardService.save(ward);
 
                 nameWardIn.clear();
-                hospIdIn.clear();
+                hospZipIn.clear();
                 nameWardIn.focus();
-                hospIdIn.focus();
+                hospZipIn.focus();
 
-                Notification notif_added = Notification.show("Ward added to the Database");
+                Notification notif_added = Notification.show("Ward added to the Database",3000, Notification.Position.TOP_END);
                 notif_added.open();
             }
+
         });
     }
 
+    public String formatZip(String postcode) {
+        StringBuilder sb = new StringBuilder();
+        char[] char_postcode = postcode.toCharArray();
+        for (int i = char_postcode.length - 1; i >= 0; i--) {
+            if (Character.isLetter(char_postcode[i])) {
+                char_postcode[i] = Character.toTitleCase(char_postcode[i]);
+                sb.append(char_postcode[i]);
+            } else if (Character.isDigit(char_postcode[i])) {
+                sb.append(char_postcode[i]);
+            }
+        }
+
+        //insert a space after 3 chars from the back
+        sb.insert(3, ' ');
+        int lpostcode = sb.length();
+
+        //Reverse the string
+        char[] char_postcode2 = new char[lpostcode];
+        for (int i = 0; i < lpostcode; i++) {
+            char_postcode2[lpostcode - 1-i] = sb.charAt(i);
+        }
+        return String.valueOf(char_postcode2);
+    }
 }
+
+
