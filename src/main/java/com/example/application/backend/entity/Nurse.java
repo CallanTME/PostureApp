@@ -78,7 +78,7 @@ public class Nurse implements FormatString {
         return nurse_id;
     }
 
-    public void setNurse_id(int nurse_id) {
+    public void setNurse_id(long nurse_id) {
         this.nurse_id = nurse_id;
     }
 

@@ -40,9 +40,6 @@ public class NurseService {
         return nurseRepo.search(email);
     }
 
-    public Nurse emailIdSearch(String email){
-        return nurseRepo.searchId(email);
-    }
 
 
 }
