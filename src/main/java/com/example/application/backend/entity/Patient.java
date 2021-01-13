@@ -26,7 +26,7 @@ public class Patient {
 
     }
 
-    public Patient(String name, double bScore/*, double bedNum*/){
+    public Patient(String name, double bScore){
         //use a name formatting for easier data management
         StringBuilder sb = new StringBuilder();
         boolean space = true;
@@ -49,7 +49,6 @@ public class Patient {
 
         this.name = sb.toString();
         this.bScore = bScore;
-        //this.bedNum = bedNum;
 
     }
 
@@ -96,15 +95,4 @@ public class Patient {
     public void setbScore(double bScore) {
         this.bScore = bScore;
     }
-
-    /*
-    public double getBedNum() {
-        return bedNum;
-    }
-
-    public void setBedNum(double bedNum) {
-        this.bedNum = bedNum;
-    }
-
-     */
 }

@@ -31,12 +31,9 @@ public class Bed{
 
     @Transient
     private Pressure previousPressure = new Pressure();
-    //private Pressure previousPressure = new Pressure(0,0,0);
 
     @Transient
     private Pressure currentPressure = new Pressure();
-    //private Pressure currentPressure = new Pressure();
-
 
     public Bed(double bedNum){
         this.bedNum = bedNum;
@@ -66,9 +63,8 @@ public class Bed{
 
         try {
             Class.forName("org.postgresql.Driver");
-
             c = DriverManager.getConnection("jdbc:postgresql://ec2-52-208-138-246.eu-west-1.compute.amazonaws.com:5432/d74qrk7q3mi6tl", "rtphbsmoqjjuas", "4e02e853823c22eba9f167d1ebb7759e7dd2c21d50743c5995e95cc08f57307b");
-            //c = DriverManager.getConnection("jdbc:postgresql://gamepi:5432/webApp","ollie", "smelly");
+            //c = DriverManager.getConnection("jdbc:postgresql://braden.ddns.net:4444/webApp ","braden", "ImperialBradenProject");
 
         } catch (Exception p) {
             p.printStackTrace();
@@ -128,7 +124,7 @@ public class Bed{
         double diff = currentPressure.getpLeft() - currentPressure.getpRight();
 
         //Minimum difference for a patient to have moved
-        double mindiff = 50;
+        double mindiff = 60;
 
         //Differences between the current and previous R and L pressures
         double change_r = currentPressure.getpRight() - previousPressure.getpRight();
@@ -175,12 +171,15 @@ public class Bed{
         }
         //If patient has moved
         else {
-
-            count = 0;
-            timeInPos = 0;
-            status = 0;
+            reset();
         }
 
+    }
+
+    public void reset(){
+        count = 0;
+        status = 0;
+        timeInPos = 0;
     }
 
     public void update(){

@@ -45,25 +45,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         UserDetails user1 =
                 User.withUsername("Callan")
-                        .password("{noop}password")
+                        .password("{noop}posture1")
                         .roles("USER")
                         .build();
 
         UserDetails user2 =
                 User.withUsername("Olly")
-                        .password("{noop}password")
+                        .password("{noop}posture1")
                         .roles("USER")
                         .build();
 
         UserDetails user3 =
                 User.withUsername("Nikita")
-                        .password("{noop}password")
+                        .password("{noop}posture1")
                         .roles("USER")
                         .build();
 
         UserDetails user4 =
                 User.withUsername("Alice")
-                        .password("{noop}password")
+                        .password("{noop}posture1")
                         .roles("USER")
                         .build();
 
