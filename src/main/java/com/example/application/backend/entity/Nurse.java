@@ -10,7 +10,7 @@ public class Nurse implements FormatString {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int nurse_id;
+    private long nurse_id;
     private String email;
     private String name;
     private String password;
@@ -74,7 +74,7 @@ public class Nurse implements FormatString {
         this.ward = ward;
     }
 
-    public int getNurse_id() {
+    public long getNurse_id() {
         return nurse_id;
     }
 

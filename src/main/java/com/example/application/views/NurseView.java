@@ -4,7 +4,6 @@ import com.example.application.backend.entity.Nurse;
 import com.example.application.backend.entity.Ward;
 import com.example.application.backend.service.NurseService;
 import com.example.application.backend.service.WardService;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
@@ -13,7 +12,6 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -25,17 +23,15 @@ public class NurseView extends VerticalLayout {
     private NurseService nurseService;
     private WardService wardService;
 
-    private HorizontalLayout otherPages = new HorizontalLayout();
     private HorizontalLayout addNurse = new HorizontalLayout();
     private HorizontalLayout assignN = new HorizontalLayout();
 
-    Button mainPage = new Button ("Main Page");
 
-    TextField nurseId = new TextField("Nurse Id");
+    TextField nurseEmailIn = new TextField("Enter Nurse Email");
     TextField nameIn = new TextField("Nurse Name");
     TextField nurseEmail = new TextField("Nurse Email");
-    TextField wardId = new TextField("Enter the ward Id");
-    TextField wardId1 = new TextField("Enter the ward Id");
+    TextField wardName = new TextField("Enter the ward Name");
+    TextField wardName1 = new TextField("Enter the ward Name");
     //TextField createPassword = new TextField("Create a password");
     Button addNurseButton = new Button("Add New Nurse and Assign");
     Button assignNurseButton = new Button("Assign Nurse to Ward");
@@ -45,10 +41,6 @@ public class NurseView extends VerticalLayout {
         this.nurseService=nurseService;
         this.wardService = wardService;
 
-        otherPages.add(mainPage);
-        otherPages.setVerticalComponentAlignment(Alignment.START,mainPage);
-        add(otherPages);
-
         setAlignItems(Alignment.CENTER);
         add(new H1("Nurse Login and assigmnent"));
 
@@ -57,8 +49,8 @@ public class NurseView extends VerticalLayout {
 
         addNurse.setAlignItems(FlexComponent.Alignment.BASELINE);
         assignN.setAlignItems(FlexComponent.Alignment.BASELINE);
-        addNurse.add(nameIn,nurseEmail,wardId,addNurseButton);
-        assignN.add(nurseId,wardId1, assignNurseButton);
+        addNurse.add(nameIn,nurseEmail, wardName,addNurseButton);
+        assignN.add(nurseEmailIn, wardName1, assignNurseButton);
 
         add(new H3("Add nurse to Database and assign nurse to ward"));
         add(addNurse);
@@ -67,7 +59,9 @@ public class NurseView extends VerticalLayout {
 
 
         addNurseButton.addClickListener(e ->{
+
             String email= nurseEmail.getValue();
+            email = email.toLowerCase();
             boolean c_email = false;
             for (int i=0;i<email.length();i++){
                 if (email.charAt(i)=='@'){
@@ -75,13 +69,10 @@ public class NurseView extends VerticalLayout {
                 }
             }
 
-            if (nameIn.getValue().equals("") || nurseEmail.getValue().equals("") || wardId.getValue().equals("")) {
-                Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
-                emptyFieldError.open();
-            }
 
-            else if(wardService.getById(Math.round(Float.parseFloat(wardId.getValue())))==null){
-                Notification emptyFieldError = new Notification("This ward does not exist", 3000, Notification.Position.TOP_END);
+
+            if (nameIn.getValue().equals("") || nurseEmail.getValue().equals("") || wardName.getValue().equals("")) {
+                Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
                 emptyFieldError.open();
             }
 
@@ -90,55 +81,67 @@ public class NurseView extends VerticalLayout {
                 emptyFieldError.open();
             }
 
+            else if(wardService.nameSearch(wardName.getValue().toLowerCase())==null){
+                Notification emptyFieldError = new Notification("Ward name not in database", 3000, Notification.Position.TOP_END);
+                emptyFieldError.open();
+            }
+
             else {
                 Nurse nurse = new Nurse(nameIn.getValue(), nurseEmail.getValue());
-                nurse.setWard(wardService.getById(Math.round(Float.parseFloat(wardId.getValue()))));
+                nurse.setWard(wardService.nameSearch(wardName.getValue().toLowerCase()));
 
                 nurseService.save(nurse);
 
                 nameIn.clear();
                 nurseEmail.clear();
-                wardId.clear();
+                wardName.clear();
                 nameIn.focus();
                 nurseEmail.focus();
-                wardId.focus();
+                wardName.focus();
 
-                Notification n = Notification.show("Nurse added to the Database");
+                Notification n = Notification.show("Nurse added to the Database", 3000, Notification.Position.TOP_END);
                 add(n);
             }
+
+
         });
 
         assignNurseButton.addClickListener(e ->{
 
-            if (wardId1.getValue().equals("")|| nurseId.getValue().equals("")) {
+            String email= nurseEmailIn.getValue();
+            email = email.toLowerCase();
+
+            if (wardName1.getValue().equals("")|| nurseEmailIn.getValue().equals("")) {
                 Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
                 emptyFieldError.open();
             }
 
-            else if(wardService.getById(Math.round(Float.parseFloat(wardId1.getValue())))==null){
-                Notification emptyFieldError = new Notification("This ward Id does not exist", 3000, Notification.Position.TOP_END);
+            else if(nurseService.emailSearch(email)==null){
+                Notification emptyFieldError = new Notification("This email is not in the database", 3000, Notification.Position.TOP_END);
                 emptyFieldError.open();
             }
 
-            else if(nurseService.getById(Math.round(Float.parseFloat(nurseId.getValue())))==null){
-                Notification emptyFieldError = new Notification("This nurse Id does not exist", 3000, Notification.Position.TOP_END);
+            else if(wardService.nameSearch(wardName1.getValue().toLowerCase())==null){
+                Notification emptyFieldError = new Notification("Ward name not in database", 3000, Notification.Position.TOP_END);
                 emptyFieldError.open();
             }
 
             else {
-                Ward ward = wardService.getById(Math.round(Float.parseFloat(wardId1.getValue())));
-                Nurse nurse = nurseService.getById(Math.round(Float.parseFloat(nurseId.getValue())));
-                nurseService.deleteById(Math.round(Float.parseFloat(nurseId.getValue())));
+                Ward ward = wardService.nameSearch(wardName1.getValue().toLowerCase());
+                Nurse nurse = nurseService.emailSearch(email);
+
+                nurseService.deleteById(Math.round(nurse.getNurse_id()));
                 nurse.setWard(ward);
                 nurseService.save(nurse);
 
-                wardId1.clear();
-                nurseId.clear();
-                wardId1.focus();
-                nurseId.focus();
+                wardName1.clear();
+                nurseEmailIn.clear();
+                wardName1.focus();
+                nurseEmailIn.focus();
 
-                Notification n = Notification.show("Nurse reassigned");
+                Notification n = Notification.show("Nurse reassigned", 3000, Notification.Position.TOP_END);
                 add(n);
+
             }
         });
 
