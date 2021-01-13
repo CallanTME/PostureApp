@@ -24,6 +24,7 @@ public class Ward {
 
 
     public Ward(String ward_name, Hospital hospital){
+        ward_name=ward_name.toLowerCase();
         this.ward_name = ward_name;
         this.hospital = hospital;
     }
@@ -60,5 +61,6 @@ public class Ward {
     public List<Bed> getBed_list() {
         return bed_list;
     }
+    public Hospital getHospital(){return hospital;}
 
 }

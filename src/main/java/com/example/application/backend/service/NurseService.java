@@ -1,5 +1,6 @@
 package com.example.application.backend.service;
 
+import com.example.application.backend.entity.Hospital;
 import com.example.application.backend.entity.Nurse;
 import com.example.application.backend.repository.NurseRepo;
 import org.springframework.stereotype.Service;
@@ -34,4 +35,11 @@ public class NurseService {
         }
         nurseRepo.save(nurse);
     }
+
+    public Nurse emailSearch(String email){
+        return nurseRepo.search(email);
+    }
+
+
+
 }
