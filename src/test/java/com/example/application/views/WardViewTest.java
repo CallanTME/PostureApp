@@ -34,6 +34,7 @@ import com.github.mvysny.kaributesting.v10.spring.MockSpringServlet;
 
 
 import static com.github.mvysny.kaributesting.v10.LocatorJ.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class WardViewTest {
     private static Routes routes;
     @BeforeAll
     public static void discoverRoutes() {
-        routes = new Routes().autoDiscoverViews("com.example.application.views");
+        routes = new Routes().autoDiscoverViews("com.example.application.views.WardView");
     }
 
     @Autowired
@@ -60,29 +61,28 @@ public class WardViewTest {
 
     @Autowired
     private BedRepo repo;
+    private PatientService ps;
+    private BedService bs;
 
     @BeforeEach
     public void setup() {
-        final Function0<UI> uiFactory = UI::new;
-        final SpringServlet servlet = new MockSpringServlet(routes, ctx, uiFactory);
-        MockVaadin.setup(uiFactory, servlet);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        MockVaadin.tearDown();
-    }
+        final Function0<UI> WardView = UI::new;
+        final SpringServlet servlet = new MockSpringServlet(routes, ctx, WardView);
+        MockVaadin.setup(WardView, servlet);
+//        MockVaadin.setup(routes);
+   //     MockVaadin.setup { beanFactory!!.getBean(MainUI::class.java)
+        }
 
     @Test
-    public void placeOrder() {
+    public void addPatient() {
         _setValue(_get(TextField.class, spec -> spec.withCaption("Name")), "Nikita");
-        _setValue(NumberField.class, spec);
-        _setValue(_get(ComboBox.class, spec -> spec.withCaption("ID")), "Small");
-        _click(_get(Button.class, spec -> spec.withCaption("Place order")));
+//      _setValue(_get(NumberField.class, spec -> spec.withCaption("Braden Score")),"Braden Score");
+//        _setValue(_get(ComboBox.class, spec -> spec.withCaption("ID")), "Small");
+        _click(_get(Button.class, spec -> spec.withCaption("Add New")));
 
-        final List<TShirtOrder> all = repo.findAll();
-        assertEquals("orders=" + all, 1, all.size());
-        assertEquals("Foo", all.get(0).getName());
+        //final List<TShirtOrder> all = repo.findAll();
+        //assertEquals("orders=" + all, 1, all.size());
+        //assertEquals("Foo", all.get(0).getName());
     }
 
 

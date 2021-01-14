@@ -15,6 +15,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.*;
 
@@ -102,7 +103,6 @@ public class WardView extends VerticalLayout {
 //            binder.forField(nameIn)
 //                .asRequired("Every patient must have a name")
 //                .bind(nameIn, Patient::getName, Patient::setName);
-            if(nameIn.isEmpty() != false) {
 
                 Patient patient = new Patient(nameIn.getValue(), bScoreIn.getValue()/*,bedNumIn.getValue()*/);
                 Bed bed = new Bed(bedNumIn.getValue(), false);
@@ -121,7 +121,6 @@ public class WardView extends VerticalLayout {
                 nameIn.focus();
                 bScoreIn.focus();
                 bedNumIn.focus();
-            }
 
 
 
