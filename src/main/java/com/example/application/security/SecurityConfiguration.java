@@ -41,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     @Override
+    // Defines the user log in details
     public UserDetailsService userDetailsService() {
 
         UserDetails user1 =

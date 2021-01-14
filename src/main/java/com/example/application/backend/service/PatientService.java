@@ -33,19 +33,6 @@ public class PatientService {
         return patientRepo.getOne(id);
     }
 
-    /*
-    public Optional<Patient> findByBedNum(double bedNum){
-        for(long i = 1;i < patientRepo.count();i++){
-            double tempBedNum = patientRepo.getOne(i).getBedNum();
-            if(tempBedNum == bedNum){
-                return patientRepo.findById(i);
-            }
-        }
-        return null;
-    }
-
-     */
-
     public Optional<Patient> findById(long id){
         return patientRepo.findById(id);
     }

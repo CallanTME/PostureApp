@@ -38,6 +38,7 @@ public class Bed{
     public Bed(double bedNum){
         this.bedNum = bedNum;
         isEmpty = true;
+        // sets the id so it is the same as the bed number
         id = Math.round(bedNum);
         count = 0;
     }
@@ -176,12 +177,15 @@ public class Bed{
 
     }
 
+    // for when a patient changes position or is repositioned by the nurse
     public void reset(){
+
         count = 0;
         status = 0;
         timeInPos = 0;
     }
 
+    // this runs periodically to get new data and update the status of each occupied bed
     public void update(){
         getPressureData();
         setStatus();
