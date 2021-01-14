@@ -56,8 +56,8 @@ public class WardViewTest {
         routes = new Routes().autoDiscoverViews("com.example.application.views.WardView");
     }
 
-    @Autowired
-    private ApplicationContext ctx;
+//    @Autowired
+//    private ApplicationContext ctx;
 
     @Autowired
     private BedRepo repo;
