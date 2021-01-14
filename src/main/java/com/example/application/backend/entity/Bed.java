@@ -55,15 +55,18 @@ public class Bed{
     }
 
     public void getPressureData() {
-        //establish the db connection:
+        //To establish a hard coded postgres DB connection we need the following variable types:
         Statement stmt = null;
         Connection c = null;
 
+        //array to hold the data we extract from the DB
         double tempData[] = new double[3];
 
 
+        //The heroku Postgres database was set up within Heroku
         try {
             Class.forName("org.postgresql.Driver");
+            //log in details to gain access to the database:
             c = DriverManager.getConnection("jdbc:postgresql://ec2-52-208-138-246.eu-west-1.compute.amazonaws.com:5432/d74qrk7q3mi6tl", "rtphbsmoqjjuas", "4e02e853823c22eba9f167d1ebb7759e7dd2c21d50743c5995e95cc08f57307b");
             //c = DriverManager.getConnection("jdbc:postgresql://braden.ddns.net:4444/webApp ","braden", "ImperialBradenProject");
 
@@ -72,31 +75,54 @@ public class Bed{
             System.err.println(p.getClass().getName() + ": " + p.getMessage());
             System.exit(0);
         }
+        //now connected to the heroku postgres database
+
+
+
+
+        /*
+        The real life device has 3 sensors (to the left,right and underneath the patient)
+        so we will be taking the last 5 readings from each sensor and finding the average of them
+
+        To replicate the pressure sensors giving us live readings we will contiually adjust
+        the pressure readings table (called pressuretable) we will delete the oldest records of
+        the bed data we are accessing and then insert random new ones every time the program
+        goes through this part of code
+
+         */
 
 
         try {
-
+            //new sql statement:
             stmt = c.createStatement();
+            //to find the average of the last 5 readings of each pressure sensor
             String sql = "select avg(\"left\") as avg1,avg(\"right\") as avg2,avg(under) as avg3 from(select \"left\",\"right\",under from pressuretable where bed_num = "+bedNum+" Order By id desc\n" +
                     "    limit 5)as notneeded";
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()){
+                //assigning the pressure average values into the variables we created
                 tempData[0] = rs.getDouble("avg1");
                 tempData[1] = rs.getDouble("avg2");
                 tempData[2] = rs.getDouble("avg3");
             }
+
+            //the part that will replicate the live sensors:
+            //1st to delete old rows to get rid of the oldest values since we are using the free
+            //version of heroku there is a limit on rows we can have so will need to limit
+            //the total number of rows we have at one time
             String deleteData = "delete from pressuretable where\n" +
                     "id=any(select id from pressuretable where bed_num = "+bedNum+"\n" +
                     "order by id asc limit 5)";
             stmt.executeUpdate(deleteData);
 
+            //inserting 5 random values into each pressureTable sensor to replicate the real life sensors
+
             String addData = "insert into pressuretable (bed_num,\"left\",\"right\",under)\n" +
                     "select  "+ bedNum +", (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,5);";
             stmt.executeUpdate(addData);
 
-
+            //close the database connection
             c.close();
-            //System.out.println("mission success!");
 
         }catch (Exception f) {
             f.printStackTrace();

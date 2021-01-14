@@ -10,8 +10,7 @@ public class Nurse implements FormatString {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int nurse_id;
-    @Email
+    private long nurse_id;
     private String email;
     private String name;
     private String password;
@@ -22,18 +21,31 @@ public class Nurse implements FormatString {
 
     public Nurse(String name, String email) {
         this.name= FormatName(name);
-        this.email=email;
+
+        //checks if the email is in a correct format
+        if(correct_email(email)){
+            this.email=email.toLowerCase();
+        }
+        else{
+            System.err.println("Incorect Email Format");
+        }
     }
 
     public Nurse(){}
 
-    //to make it easier, the email serves as Login (it is unique)
     public String getEmail() {
         return email;
     }
-    //this is used to reset the email
+
+    //assigns an email if the format is correct
     public void setEmail(String email) {
-        this.email = email;
+        if(correct_email(email)){
+            this.email=email.toLowerCase();
+        }
+        else{
+            System.err.println("Incorect Email Format");
+        }
+
     }
 
     public String getName() {
@@ -62,11 +74,11 @@ public class Nurse implements FormatString {
         this.ward = ward;
     }
 
-    public int getNurse_id() {
+    public long getNurse_id() {
         return nurse_id;
     }
 
-    public void setNurse_id(int nurse_id) {
+    public void setNurse_id(long nurse_id) {
         this.nurse_id = nurse_id;
     }
 
@@ -97,5 +109,16 @@ public class Nurse implements FormatString {
     @Override
     public String FormatPostcode(String postcode) {
         return null;
+    }
+
+    public boolean correct_email(String email){
+        boolean c_email = false;
+
+        for (int i=0;i<email.length();i++){
+            if (email.charAt(i)=='@'){
+                c_email=true;
+            }
+        }
+        return c_email;
     }
 }

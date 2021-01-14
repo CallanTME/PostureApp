@@ -32,4 +32,10 @@ public class HospitalService {
         }
         hospitalRepo.save(hospital);
     }
+
+     public Hospital zipsearch(String zipcode){
+        return hospitalRepo.search(zipcode);
+     }
+
+
 }
