@@ -36,6 +36,8 @@ public class NurseService {
         nurseRepo.save(nurse);
     }
 
+    //Gets from the database the nurse object whose email is provided  (used instead of getById)
+    //Calls a function in the Nurse repository
     public Nurse emailSearch(String email){
         return nurseRepo.search(email);
     }
