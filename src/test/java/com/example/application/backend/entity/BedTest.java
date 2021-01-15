@@ -10,39 +10,6 @@ public class BedTest {
     private Bed bed;
     private Patient patient;
 
-    //need to use DBTest, when on local repository, doesn't work on aws
-    /*@BeforeClass
-        public static void setUp(){
-            Statement stmt = null;
-            Connection c = null;
-            try {
-                Class.forName("org.postgresql.Driver");
-                c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/", "postgres", "06AL12du");
-            } catch (Exception p) {
-                p.printStackTrace();
-                System.err.println(p.getClass().getName() + ": " + p.getMessage());
-                System.exit(0);
-            }
-            try {
-                stmt = c.createStatement();
-
-                String sql1 = ("delete from public.info;\n"+
-                                "insert into Info ([left],[right],[under],[bed_num]) (1.0,1.1,1.2,1)\t");
-                stmt.executeUpdate(sql1);
-
-
-            } catch (Exception f) {
-                f.printStackTrace();
-                System.err.println(f.getClass().getName() + ": " + f.getMessage());
-                System.exit(0);
-            }
-
-            try {
-                stmt.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }*/
     @Before
     public void setUpData(){ //Creates a bed used in most of the test
         bed =new Bed(3);
@@ -98,37 +65,6 @@ public class BedTest {
     }
 
 
-
-    /*@AfterClass
-        Statement stmt = null;
-        Connection c = null;
-        try {
-            Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/groupProject", "postgres", "06AL12du");
-        } catch (Exception p) {
-            p.printStackTrace();
-            System.err.println(p.getClass().getName() + ": " + p.getMessage());
-            System.exit(0);
-        }
-        try {
-            stmt = c.createStatement();
-            String sql = "DROP TABLE if exists Info\t);";
-            stmt.executeUpdate(sql);
-
-        }catch (Exception f) {
-            f.printStackTrace();
-            System.err.println(f.getClass().getName() + ": " + f.getMessage());
-            System.exit(0);
-        }
-
-        try {
-            stmt.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }*/
-
-
-
-    }
+}
 
 
