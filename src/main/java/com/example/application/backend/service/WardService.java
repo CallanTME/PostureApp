@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 @Service
 public class WardService {
     private static final Logger LOGGER = Logger.getLogger(WardService.class.getName());
+    //declares a ward repo as the service communicates with the repositpory (database)
     private WardRepo wardRepo;
 
     public List<Ward> findAll(){return wardRepo.findAll();}
@@ -32,6 +33,8 @@ public class WardService {
         wardRepo.save(ward);
     }
 
+    //Gets  from the database the ward object whose name is provided (used instead of getById)
+    //Calls a function in the repository
     public Ward nameSearch(String name){
         return wardRepo.search(name);
     }
