@@ -22,14 +22,14 @@ import com.vaadin.flow.router.Route;
 @PageTitle("Hospital and Ward View | Posture App")
 //@Secured("ROLE_Admin")
 public class HospitalView extends VerticalLayout {
+    //Services are declared as they communicate with the database
     private HospitalService hospitalService;
     private WardService wardService;
 
-    private HorizontalLayout otherPages = new HorizontalLayout();
     private HorizontalLayout addHospital = new HorizontalLayout();
     private HorizontalLayout addWard = new HorizontalLayout();
 
-
+    //Textfields where the user can write the entries
     TextField nameIn = new TextField("Hospital Name");
     TextField zipcodeIn = new TextField("Hospital Zipcode");
     Button addHospitalButton = new Button("Add New Hospital");
@@ -39,6 +39,7 @@ public class HospitalView extends VerticalLayout {
     Button addWardButton = new Button("Add New Ward");
 
     public HospitalView( HospitalService hospitalService, WardService wardService) {
+        //The services communicate with the database, we don't write directly in the database
         this.hospitalService = hospitalService;
         this.wardService = wardService;
 
@@ -46,6 +47,7 @@ public class HospitalView extends VerticalLayout {
         setAlignItems(Alignment.CENTER);
         add(new H1("Hospital and Wards Login"));
 
+        //Sets the bounds to the textfields to ab=void wrong entries
         zipcodeIn.setMaxLength(9);
         hospZipIn.setMaxLength(9);
         addHospitalButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
@@ -53,48 +55,60 @@ public class HospitalView extends VerticalLayout {
 
         addHospital.setAlignItems(FlexComponent.Alignment.BASELINE);
         addWard.setAlignItems(FlexComponent.Alignment.BASELINE);
+        //Adds the textfields and buttons in the horizontal layout
         addHospital.add(nameIn,zipcodeIn,addHospitalButton);
         addWard.add(hospZipIn,nameWardIn,addWardButton);
 
+        //adds the horizontal layouts to the view
         add(addHospital,addWard);
 
 
 
+        //Defines the actions when a addHospitalButton is clicked
         addHospitalButton.addClickListener(e ->{
+            //If all fields are not field, sends a notification
             if (nameIn.getValue().equals("") || zipcodeIn.getValue().equals("")) {
                 Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
                 emptyFieldError.open();
             }
+
+            //enters the hospital in the database with all the fields entered
             else {
                 Hospital hospital = new Hospital(nameIn.getValue(), zipcodeIn.getValue());
 
                 hospitalService.save(hospital);
 
+                //Empties the textfields for new entries
                 nameIn.clear();
                 zipcodeIn.clear();
                 nameIn.focus();
                 zipcodeIn.focus();
 
+                //Notifies the user the hospital is added to the database
                 Notification n = Notification.show("Hospital added to the Database", 3000, Notification.Position.TOP_END);
                 add(n);
             }
         });
 
+        //Defines the actions when a addWardButton is clicked
         addWardButton.addClickListener(e ->{
 
             String zip = hospZipIn.getValue();
             zip = formatZip(zip);
 
+            //If all fields are not field, sends a notification
             if (hospZipIn.getValue().equals("") || nameWardIn.getValue().equals("")) {
                 Notification emptyFieldError = new Notification("Please fill in all fields", 3000, Notification.Position.TOP_END);
                 emptyFieldError.open();
             }
 
+            //If the zipcode of the hospital doesn't exist in the database, sends a notification
             else if (hospitalService.zipsearch(zip)==null){
                 Notification emptyFieldError = new Notification("This postcode is not correct, enter a hospital first", 3000, Notification.Position.TOP_END);
                 emptyFieldError.open();
             }
 
+            //enters the ward in the database with all the fields entered. The ward is linked to a hospital
             else {
                 Ward ward = new Ward(nameWardIn.getValue(), hospitalService.zipsearch(zip));
                 wardService.save(ward);
@@ -104,6 +118,7 @@ public class HospitalView extends VerticalLayout {
                 nameWardIn.focus();
                 hospZipIn.focus();
 
+                //Notifies the user the ward is added to the database
                 Notification notif_added = Notification.show("Ward added to the Database",3000, Notification.Position.TOP_END);
                 notif_added.open();
             }
@@ -111,6 +126,7 @@ public class HospitalView extends VerticalLayout {
         });
     }
 
+    //Formats the zip with the same format as in the entiies and easers the search
     public String formatZip(String postcode) {
         StringBuilder sb = new StringBuilder();
         char[] char_postcode = postcode.toCharArray();
