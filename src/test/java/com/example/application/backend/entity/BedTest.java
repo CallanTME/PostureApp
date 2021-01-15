@@ -1,5 +1,6 @@
 package com.example.application.backend.entity;
 
+import com.example.application.backend.Pressure;
 import junit.framework.Assert;
 import org.junit.*;
 
@@ -9,7 +10,7 @@ public class BedTest {
     private Bed bed;
     private Patient patient;
 
-    //need to use DBTest
+    //need to use DBTest, when on local repository, doesn't work on aws
     /*@BeforeClass
         public static void setUp(){
             Statement stmt = null;
@@ -43,13 +44,14 @@ public class BedTest {
             }
         }*/
     @Before
-    public void setUpData(){
+    public void setUpData(){ //Creates a bed used in most of the test
         bed =new Bed(3);
         patient = new Patient("Ollie",13);
     }
 
 
     @Test
+    //Asserts the constructor works correctly
     public void test_Bed_constructor() {
         Bed bed1 =new Bed(1);
         Bed bed2 = new Bed(2,false);
@@ -96,15 +98,6 @@ public class BedTest {
     }
 
 
-    /*@Test
-    public void test_GetPressureData(){
-        Bed bed1 =new Bed(1);
-        bed1.getPressureData();
-        Assert.assertEquals(1.0,bed1.getCurrentPressure().getpLeft());
-        Assert.assertEquals(1.1,bed1.getCurrentPressure().getpRight());
-        Assert.assertEquals(1.2,bed1.getCurrentPressure().getpUnder());
-
-    }*/
 
     /*@AfterClass
         Statement stmt = null;
