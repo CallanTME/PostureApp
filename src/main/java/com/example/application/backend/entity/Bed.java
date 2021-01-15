@@ -121,6 +121,27 @@ public class Bed{
                     "select  "+ bedNum +", (random()*100)::int,  (random()*100)::int,(random()*100)::int from generate_series(1,5);";
             stmt.executeUpdate(addData);
 
+
+            /*
+            we also want to store pressure data for researchers and for the legal side.
+            Due to limitations of free Heroku we can't save all the data as we would simply
+            quickly run out of storage space. Below is the code used to create a view (virtual table)
+            which will save all the pressure data.
+
+
+
+            the below statement will save all of the incoming pressure data with its allocated
+            patient info, without their name for confidentiality reasons.
+
+            String researchStr = "create view info as"+
+	        "select patient.bed_num,b_score,patient.id,is_empty,"left","right",under"+
+	        "from bed,patient,pressuretable"+
+            "where is_empty = false";
+            stmt.executeUpdate(researchStr);
+
+             */
+
+
             //close the database connection
             c.close();
 

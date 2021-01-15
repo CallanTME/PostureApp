@@ -7,6 +7,10 @@ import com.vaadin.flow.server.VaadinServiceInitListener;
 import com.example.application.views.LoginView;
 import org.springframework.stereotype.Component;
 
+/* 
+Reference 1 - Taken from https://vaadin.com/learn/tutorials/modern-web-apps-with-spring-boot-and-vaadin/adding-a-login-screen-to-a-vaadin-app-with-spring-security
+*/
+
 @Component
 public class ConfigureUIServiceInitListener implements VaadinServiceInitListener {
 

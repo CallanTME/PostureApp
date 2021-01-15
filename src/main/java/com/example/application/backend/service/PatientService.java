@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// This class acts as a middle layer between the repository and the UI
 @Service
 public class PatientService {
     private static final Logger LOGGER = Logger.getLogger(PatientService.class.getName());
