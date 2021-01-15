@@ -66,13 +66,15 @@ public class Nurse implements FormatString {
     /*The password is not used yet in the program as there is only one user type
     Further development: create another secured class with the password and an id (not the login);
     keeps the login detail and password in 2 different class to enhance security
+    */
+
     public String getPassword() {
         return password;
     }
     //useful when resetting password
     public void setPassword(String password) {
         this.password = password;
-    }*/
+    }
 
     public Ward getWard() {
         return ward;
