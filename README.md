@@ -8,18 +8,12 @@ The project is "A posture monitoring system for prevention of ulcer formation in
 The web application was deployed in Heroku and accessible at the following address: http://postureapp.herokuapp.com/login
 
 As the user interface and user experience is a core requirement of the software, Vaadin was used. Vaadin is an open source framework which enables to create web applications using java. The project is organised by:
-
-    Backend: All the classes and Database tables which defines the components visible in the UI and the logic 
-    * Entities:
-        Defines class and their methods
-    * Repositories:
-        Database, sql command queries from the database
-    * Service:
-        Communicates with the repository to add and get information from the database
-
-     Security: Defines the login security settings and who can access the application
-
-     Views: User interfaces visible in the application. It calls the services to display information
+* Backend: All the classes and Database tables which defines the components visible in the UI and the logic 
+  - Entities: Defines class and their methods
+  - Repositories: Database, sql command queries from the database
+  - Service: Communicates with the repository to add and get information from the database
+* Security: Defines the login security settings and who can access the application
+* Views: User interfaces visible in the application. It calls the services to display information
  
 **Flow of the application**
 
