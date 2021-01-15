@@ -12,6 +12,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+/* 
+Reference 1 - Taken from https://vaadin.com/learn/tutorials/modern-web-apps-with-spring-boot-and-vaadin/adding-a-login-screen-to-a-vaadin-app-with-spring-security
+
+This code is slightly edited but the bulk is from the tutorial
+*/
 
 @EnableWebSecurity
 @Configuration
@@ -74,8 +79,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .password("{noop}nettles")
                         .roles("USER")
                         .build();
+        
+        UserDetails user6 =
+                User.withUsername("Colin")
+                        .password("{noop}posture")
+                        .roles("USER")
+                        .build();
+        
+        UserDetails user7 =
+                User.withUsername("Spyros")
+                        .password("{noop}posture")
+                        .roles("USER")
+                        .build();
 
-        return new InMemoryUserDetailsManager(user1, user2, user3, user4, user5);
+        return new InMemoryUserDetailsManager(user1, user2, user3, user4, user5, user6, user7);
 
     }
 
