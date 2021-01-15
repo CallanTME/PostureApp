@@ -43,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public UserDetailsService userDetailsService() {
 
+        //Defines all the users who can access the app
         UserDetails user1 =
                 User.withUsername("Callan")
                         .password("{noop}posture1")
@@ -67,7 +68,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .roles("USER")
                         .build();
 
-        return new InMemoryUserDetailsManager(user1, user2, user3, user4);
+        UserDetails user5 =
+                User.withUsername("MrHolloway")
+                        .password("{noop}nettles")
+                        .roles("USER")
+                        .build();
+
+        return new InMemoryUserDetailsManager(user1, user2, user3, user4, user5);
 
     }
 
