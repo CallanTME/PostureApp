@@ -11,9 +11,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+// This class acts as a middle layer between the repository and the UI
 @Service
 public class BedService {
 
+    // These methods call the repos methods
     private BedRepo bedRepo;
 
     public BedService(BedRepo bedRepo){
@@ -28,21 +30,9 @@ public class BedService {
         return bedRepo.findById(id);
     }
 
-
-
-    public void deleteById(long id){
-        bedRepo.deleteById(id);
-    }
-
     public void deleteAll(){
         bedRepo.deleteAll();
     }
-
-    public Bed getById(long id){
-        return bedRepo.getOne(id);
-    }
-
-
 
     public void deleteByBedNum(double bedNum){
         ArrayList<Bed> bedList = new ArrayList<Bed>();
@@ -65,17 +55,11 @@ public class BedService {
         return null;
     }
 
-
-    public boolean isEmptyById(long id){
-        return bedRepo.getOne(id).isEmpty();
-    }
-
-
-
     public void save(Bed bed){
         bedRepo.save(bed);
     }
 
+    // This creates 9 empty beds when the program is first run
     @PostConstruct
     public void setUpBeds(){
         if(bedRepo.count() == 0){
