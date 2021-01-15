@@ -1,5 +1,6 @@
 package com.example.application.backend.entity;
 
+import com.example.application.backend.FormatString;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Entity;
@@ -10,7 +11,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-public class Patient {
+public class Patient implements FormatString {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -28,26 +30,7 @@ public class Patient {
 
     public Patient(String name, double bScore){
         //use a name formatting for easier data management
-        StringBuilder sb = new StringBuilder();
-        boolean space = true;
-
-        for (char c : name.toCharArray()){
-            if(Character.isLetter(c)){
-                if(space){
-                    c= Character.toTitleCase(c);
-                }
-                else{
-                    c= Character.toLowerCase(c);
-                }
-                space=false;
-            }
-            else{
-                space=true;
-            }
-            sb.append(c);
-        }
-
-        this.name = sb.toString();
+        this.name = FormatName(name);
         this.bScore = bScore;
 
     }
@@ -66,9 +49,29 @@ public class Patient {
 
     public void setName(String name) {
         //use a name formatting for easier data management
+       this.name = FormatName(name);
+    }
+
+    //The bradenscore characterises the likelihood a patient develops a pressure ulcere
+    public double getbScore() {
+        return bScore;
+    }
+    public void setbScore(double bScore) {
+        this.bScore = bScore;
+    }
+
+    /*
+    Calls the interface FormatString
+    Formats the name entry before pushing the patient object in the database to keep clean data
+    Enables easier queries
+    All the letters are lower case except the first letter of each word
+     */
+    @Override
+    public String FormatName(String name) {
         StringBuilder sb = new StringBuilder();
         boolean space = true;
 
+        //puts all the letters in a string builder with the required case type
         for (char c : name.toCharArray()){
             if(Character.isLetter(c)){
                 if(space){
@@ -84,15 +87,11 @@ public class Patient {
             }
             sb.append(c);
         }
-
-        this.name = sb.toString();
+        return sb.toString();
     }
 
-    public double getbScore() {
-        return bScore;
-    }
-
-    public void setbScore(double bScore) {
-        this.bScore = bScore;
+    @Override
+    public String FormatPostcode(String postcode) {
+        return null;
     }
 }
