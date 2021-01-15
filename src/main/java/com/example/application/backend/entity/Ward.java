@@ -4,6 +4,14 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Class that stores the ward for different hospitals
+Not used at its full potential as of 13/01/2020
+Future development : There will be different wards in the Ward view.
+Nurses assigned to a ward will only be able to access their ward
+ */
+
+
 @Entity
 public class Ward {
     @Id
@@ -15,6 +23,8 @@ public class Ward {
     @ManyToOne
     private Hospital hospital;
 
+    //These fields are no used yet. For future development, a ward will have specific beds and visible
+    // in view specific to the ward and accessible only by the nurses assigned to the ward
     @OneToMany
     private List<Nurse> nurse_list;
 
@@ -24,8 +34,10 @@ public class Ward {
 
 
     public Ward(String ward_name, Hospital hospital){
+        //formats the ward name as lower cases
         ward_name=ward_name.toLowerCase();
         this.ward_name = ward_name;
+        //a ward is defined for a hospital (the hospital ID is a foreign key)
         this.hospital = hospital;
     }
 
@@ -37,6 +49,7 @@ public class Ward {
     }
     public String getWard_name(){return ward_name;}
 
+    //Assigns nurse to the ward
     public void addNurse(Nurse n){
         this.nurse_list.add(n);
     }
@@ -46,6 +59,7 @@ public class Ward {
         this.nurse_list.remove(n);
     }
 
+    //Adds and removes bed when the ward expands or reduces in size
     public void addBed(Bed b){
         this.bed_list.add(b);
     }

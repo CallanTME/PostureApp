@@ -16,6 +16,7 @@ public class PatientTest {
 
     @Test
     public void test_constructor(){
+        //Tests the name formatting in the constructor works as desired
         Assert.assertEquals(12, Math.round(patient1.getbScore()));
         Assert.assertEquals("Alice Duhem", patient1.getName());
     }
@@ -28,6 +29,7 @@ public class PatientTest {
 
     @Test
     public void test_setName(){
+        //Tests the name formatting works as desired
         patient.setName("olLie BarBaresi");
         Assert.assertEquals("Ollie Barbaresi", patient.getName());
     }
