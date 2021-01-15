@@ -12,6 +12,10 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.function.DeploymentConfiguration;
+import com.vaadin.flow.server.VaadinService;
+import com.vaadin.flow.server.VaadinServlet;
+import com.vaadin.flow.server.VaadinServletService;
 import com.vaadin.flow.spring.SpringServlet;
 import kotlin.jvm.functions.Function0;
 import org.junit.Assert;
@@ -53,11 +57,11 @@ public class WardViewTest {
     private static Routes routes;
     @BeforeAll
     public static void discoverRoutes() {
-        routes = new Routes().autoDiscoverViews("com.example.application.views.WardView");
+        routes = new Routes().autoDiscoverViews("com.example.application.views");
     }
 
-//    @Autowired
-//    private ApplicationContext ctx;
+    @Autowired
+    private ApplicationContext ctx;
 
     @Autowired
     private BedRepo repo;
@@ -66,11 +70,11 @@ public class WardViewTest {
 
     @BeforeEach
     public void setup() {
-        final Function0<UI> WardView = UI::new;
-        final SpringServlet servlet = new MockSpringServlet(routes, ctx, WardView);
-        MockVaadin.setup(WardView, servlet);
+        final Function0<UI> uiFactory = UI::new;
+        final SpringServlet servlet = new MockSpringServlet(routes, ctx, uiFactory);
+        MockVaadin.setup(uiFactory, servlet);
 //        MockVaadin.setup(routes);
-   //     MockVaadin.setup { beanFactory!!.getBean(MainUI::class.java)
+//        MockVaadin.setup { beanFactory!!.getBean(MainUI::class.java)
         }
 
     @Test
