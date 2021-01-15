@@ -52,7 +52,7 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest
 @WebAppConfiguration
 @DirtiesContext
-public class WardViewTest {
+public class WardViewTest2 {
 
     private static Routes routes;
     @BeforeAll
