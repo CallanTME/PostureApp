@@ -6,6 +6,7 @@ This application was developed by Oliver Barbaresi, Alice Duhem, Callan Egan and
 
 The project is "A posture monitoring system for prevention of ulcer formation in chair-bound individuals". The main aim was to create an intuitive software that nurses will use to know when they need to reposition a patient.
 The web application was deployed in Heroku and accessible at the following address: http://postureapp.herokuapp.com/login
+
 If the link doesn't work, please email oliver.barbaresi18@imperial.ac.uk, callan.egan18@imperial.ac.uk, alice.duhem18@imperial.ac.uk or nikita.narayanan18@imperial.ac.uk
 
 As the user interface and user experience is a core requirement of the software, Vaadin was used. Vaadin is an open source framework which enables to create web applications using java. The project is organised by:
