@@ -5,6 +5,13 @@ import com.example.application.backend.FormatString;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 
+/*
+Class that stores the Nurses
+Not used at its full potential as of 13/01/2020
+Future development : Each Nurse will be able to only see with their login and password the ward they are assigned to
+ */
+
+
 @Entity
 public class Nurse implements FormatString {
 
@@ -56,20 +63,20 @@ public class Nurse implements FormatString {
     }
 
 
-    //Maybe not a good idea to have it here (nobody should be able to read anyone's password)
-    //Maybe and interface?
+    /*The password is not used yet in the program as there is only one user type
+    Further development: create another secured class with the password and an id (not the login);
+    keeps the login detail and password in 2 different class to enhance security
     public String getPassword() {
         return password;
     }
     //useful when resetting password
     public void setPassword(String password) {
         this.password = password;
-    }
+    }*/
 
     public Ward getWard() {
         return ward;
     }
-
     public void setWard(Ward ward) {
         this.ward = ward;
     }
@@ -77,17 +84,22 @@ public class Nurse implements FormatString {
     public long getNurse_id() {
         return nurse_id;
     }
-
     public void setNurse_id(long nurse_id) {
         this.nurse_id = nurse_id;
     }
 
-
+    /*
+    Calls the interface FormatString
+    Formats the name entry before pushing the nurse object in the database to keep clean data
+    Enables easier queries
+    All the letters are lower case except the first letter of each word
+     */
     @Override
     public String FormatName(String name) {
         StringBuilder sb = new StringBuilder();
         boolean space = true;
 
+        //puts all the letters in a string builder with the required case type
         for (char c : name.toCharArray()){
             if(Character.isLetter(c)){
                 if(space){
@@ -111,6 +123,7 @@ public class Nurse implements FormatString {
         return null;
     }
 
+    //Checks if there is a '@' in teh email, and returns true if there is (email correct)
     public boolean correct_email(String email){
         boolean c_email = false;
 
