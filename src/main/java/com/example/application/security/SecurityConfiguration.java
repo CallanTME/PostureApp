@@ -79,8 +79,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .password("{noop}nettles")
                         .roles("USER")
                         .build();
+        
+        UserDetails user6 =
+                User.withUsername("Colin")
+                        .password("{noop}posture")
+                        .roles("USER")
+                        .build();
+        
+        UserDetails user7 =
+                User.withUsername("Spyros")
+                        .password("{noop}posture")
+                        .roles("USER")
+                        .build();
 
-        return new InMemoryUserDetailsManager(user1, user2, user3, user4, user5);
+        return new InMemoryUserDetailsManager(user1, user2, user3, user4, user5, user6, user7);
 
     }
 
