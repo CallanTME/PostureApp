@@ -43,7 +43,7 @@ public class WardViewTest {
     @BeforeAll
     public static void createRoutes() {
         // initialize routes only once, to avoid view auto-detection before every test and to speed up the tests
-        routes = new Routes().autoDiscoverViews("com.vaadin.flow.test");
+        routes = new Routes().autoDiscoverViews("com.example.application.views");
     }
 
     @BeforeEach
@@ -54,7 +54,6 @@ public class WardViewTest {
     @Before
     public void setUp(){
         patient =new Patient ("Nikita Narayanan",12);
-        patient.setId(1123456);
 
         BedRepo bedRepo = new BedRepo(){
 
@@ -201,7 +200,6 @@ public class WardViewTest {
         wardview = new WardView(bs, ps);
 
 
-        wardview.idIn.setValue((double) patient.getId());
         wardview.nameIn.setValue(patient.getName());
         wardview.bScoreIn.setValue(patient.getbScore());
         wardview.bedNumIn.setValue(2.0);
@@ -219,19 +217,6 @@ public class WardViewTest {
         }
         assertEquals(result.get().getPatient().getName(), patient.getName());
         assertEquals(result.get().getPatient().getbScore(), patient.getbScore());
-        assertEquals(result.get().getPatient().getId(), patient.getId());
     }
 
 
-
-
-    //AtomicReference<Patient> savedPatient = new AtomicReference<>(null);
-
-    //savedPatient =
-    //wardView.addButton.click();
-    //Assert.assertEquals();
-    //initialise with empty contact
-    //populate the data into the form
-    //AtomicReference saves the data without using a class
-
-}

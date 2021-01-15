@@ -80,8 +80,8 @@ public class WardViewTest {
     @Test
     public void addPatient() {
         _setValue(_get(TextField.class, spec -> spec.withCaption("Name")), "Nikita");
-//      _setValue(_get(NumberField.class, spec -> spec.withCaption("Braden Score")),"Braden Score");
-//        _setValue(_get(ComboBox.class, spec -> spec.withCaption("ID")), "Small");
+//      _setValue(_get(NumberField.class, spec -> spec.withCaption("Braden Score")), 3);
+//      _setValue(_get(NumberField.class, spec -> spec.withCaption("Bed Number")),2);
         _click(_get(Button.class, spec -> spec.withCaption("Add New")));
 
         //final List<TShirtOrder> all = repo.findAll();
